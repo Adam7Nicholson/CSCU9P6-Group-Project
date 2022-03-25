@@ -19,7 +19,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Gate extends JFrame implements ActionListener{
+public class Gate{
 
 	enum Status {
 		FREE,
@@ -28,70 +28,76 @@ public class Gate extends JFrame implements ActionListener{
 	}
 
 	private int status = Status.FREE.ordinal();
-
+	public static int gateStatus; 
+	private int gateNumber;
 	private int mCode;
 	
 	private GateInfoDatabase gateDatabase;
 	
 	//UI-Elements
-    private String title;
-    private int gateNumber;
-
-    private JPanel left;
-    private JPanel center;
-    private JPanel right;
-    private JPanel bottom;
-
-    //Panel - left
-    private JList passengerList;
-    
-    //Panel - center
-    private JLabel gateStatusL;
-    private JLabel planeStatusL;
-    private JLabel flightCodeL;
-    private JLabel flightFromL;
-    private JLabel flightToL;
-    private JLabel nextStopL;
-    private JLabel numberOfPassengersL;
-    private JLabel passengerNameL;
-
-    //Panel - right
-    private JTextField gateStatus;
-    private JTextField planeStatus;
-    private JTextField flightCode;
-    private JTextField flightFrom;
-    private JTextField flightTo;
-    private JTextField nextStop;
-    private JTextField numberOfPassengers;
-    private JTextField passengerName;
-    
-    //Panel - bottom
-    private JButton planeDocked;
-    private JButton planeUnloaded;
-    private JButton frtd; //flight ready to depart
-    private JButton addPassenger;
 	
-    
-    public Gate(GateInfoDatabase gateDatabase, String title)
+    public Gate(int gateNumber)
     {
-    	this.title = title;
-    	this.gateDatabase = gateDatabase;
-    	setTitle(title);
-    	setLocation(720, 10);
-    	setSize(650, 325);
-    	setDefaultCloseOperation(EXIT_ON_CLOSE);
-    	Container window = getContentPane();
-    	window.setLayout(new FlowLayout());
-    	
-    	
-    	//Setting up the GUI
-    	//Panel - left
-    	left = new JPanel();
-    	left.setPreferredSize(new Dimension(120, 200));
-    	passengerList = new JList();
-    	passengerList.setPreferredSize(new Dimension(120,225));
-    	window.add(passengerList);
-    	
+    	this.gateNumber = gateNumber;
+    }
+    
+	/**
+	 * Returns the current status code of the aircraft gate
+	 * @return Integer Instance Variable 'status'
+	 */
+	public int getStatus() {
+		return this.status;
+	}
+	
+	/*
+	 * Sets the current status of the gate
+	 */
+	public void setStatus(int statusNumber) {
+		status = statusNumber;
+		gateStatus = status;
+	}
+	/**
+	 * 
+	 * @param gateNumber
+	 */
+	public int getGateNumber()
+	{
+		return this.gateNumber;
+	}
+	/**
+	 * 
+	 * @param mCode
+	 */
+	public void allocate (int mCode) {
+		
+	}
+	
+	/**
+	 * 
+	 */
+	public void docked() {
+		status = Status.OCCUPIED.ordinal();
+		gateStatus = status;
+	}
+	
+	/**
+	 * 
+	 */
+	public void departed() {
+		status = Status.FREE.ordinal();
+		gateStatus = status;
+	}
+	
+	/**
+	 * 
+	 */
+	public void refresh() {
+		
+	}
+
+	
+}
+
     	//Panel - center
     	center = new JPanel(new FlowLayout(FlowLayout.LEFT,20,7));
     	center.setPreferredSize(new Dimension(140,280));

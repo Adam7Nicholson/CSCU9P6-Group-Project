@@ -1,6 +1,7 @@
 package Gate;
 
 import java.util.List;
+import java.util.Vector;
 
 /*Please put your student ID in so proper accreditation can be given for your work. 
 Ensure it is only your Student ID and *not* your name as marking is done anonymously.
@@ -9,7 +10,7 @@ Work can take any form from refactoring to code writing and anything in between,
 You should always take credit for your work.*/
 /**
 * @author 2819600
-* @author 
+* @author 2816391
 * @author 
 * @author 
 * @author 
@@ -17,16 +18,28 @@ You should always take credit for your work.*/
 */
 
 public class GateInfoDatabase {
-	private Gate[] gates;
+	private Vector<Gate> gates = new Vector<Gate>();
 	public int maxGateNumber = 2;
 	
+	public void addGate(Gate g) {
+		gates.add(g);
+	}
+	
 	public int getStatus(int gateNumber) {
-		return this.getStatus(gateNumber);
+		for(Gate g : this.gates) {
+			if (gateNumber == g.getGateNumber())return g.getStatus();
+		}
+		return -1;
 	}
 	
 	public int[] getStatuses() {
-		int statuses[] = {};
-		for (Gate g : this.gates) statuses[statuses.length] = g.getStatus();
+		int statuses[] = new int[maxGateNumber];
+		int i = 0;
+		for (Gate g : this.gates) {
+				statuses[i] = g.getStatus();
+				i++;
+			}
+		i = 0;
 		return statuses;
 	}
 	
