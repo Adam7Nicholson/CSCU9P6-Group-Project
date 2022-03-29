@@ -12,9 +12,16 @@ import java.util.Observer;
 import java.util.Vector;
 import javax.swing.*;
 
+/**
+ * @stereotype boundary/view/controller
+ * @author 
+ *
+ */
+
 
 public class RadarTransceiver extends JFrame
         implements ActionListener, Observer {
+
 
     private AircraftManagementDatabase model;
     private String title;

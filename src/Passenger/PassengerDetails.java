@@ -1,26 +1,25 @@
 package Passenger;
 
-/*Please put your student ID in so proper accreditation can be given for your work. 
-Ensure it is only your Student ID and *not* your name as marking is done anonymously.
-Please only add your name on this class if you have worked on this class.
-Work can take any form from refactoring to code writing and anything in between, of course
-You should always take credit for your work.*/
-/**
-* @author 2819600
-* @author 
-* @author 
-* @author 
-* @author 
-* @author 
-*/
-
+/**A class designed for the storing of passenger details. 
+ * As of current version, this only contains a passenger's name
+ * However, this class could be expanded upon in future to contain other information.
+ * @stereotype entity
+ * @author 2819600*/
 public class PassengerDetails {
 	private String name;
 	
+	/** Constructs passengerDetails object & sets instance variable 'name' equal to passed String.
+	 * This variable denote's the passenger's legal name.
+	 * @param name*/
 	public PassengerDetails (String name) {
 		this.name = name;
 	}
 	
+	/*
+	 * GETTERS & SETTERS
+	 */
+	
+	 /** @return Instance variable string 'name'*/
 	public String getName() {
 		return name;
 	}

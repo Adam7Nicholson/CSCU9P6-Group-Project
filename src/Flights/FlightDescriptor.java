@@ -4,30 +4,55 @@ import java.awt.List;
 
 import Passenger.PassengerList;
 
-/*Please put your student ID in so proper accreditation can be given for your work. 
-Ensure it is only your Student ID and *not* your name as marking is done anonymously.
-Please only add your name on this class if you have worked on this class.
-Work can take any form from refactoring to code writing and anything in between, of course
-You should always take credit for your work.*/
 /**
-* @author 2819600
-* @author 
-* @author 
-* @author 
-* @author 
-* @author 
+* Instantiates a flightdescriptor object containing all information for a flight
+* This includes:
+* The flight code, used as an identifier of the flight {flightCode}
+* The itinerary, used to track the flight's destination(s) {itinierary}
+* The list of passengers on the flight: Note this is a PassengerList object and not a List object. {list}
+* @stereotype entity
+* @author Martin Petrov
+* @author 2819600 
 */
-
 public class FlightDescriptor {
 	private String flightCode;
+	private Itinerary itinerary;
+	private PassengerList list;
 	
-	/**
-	 * Write Javadoc Comments Here
+	/** Instantiates a flightdescriptor object containing all information for a flight
+	 * This includes:
+	 * The flight code, used as an identifier of the flight {flightCode}
+	 * The itinerary, used to track the flight's destination(s) {itinierary}
+	 * The list of passengers on the flight: Note this is a PassengerList object and not a List object. {list}
 	 * @param flightCode
 	 * @param itinerary
 	 * @param list
 	 */
 	public FlightDescriptor(String flightCode, Itinerary itinerary, PassengerList list) {
-		//TODO FlightDescriptor Constructor
+		this.flightCode = flightCode;
+		this.itinerary = itinerary;
+		this.list = list;
 	}
-}
+
+	/*
+	 * GETTERS & SETTERS
+	 */
+	
+	//GETTERS
+	 /** @return Instance variable String 'flightCode'*/
+	public String getFlightCode() {
+		return flightCode;
+	}
+
+	 /** @return Instance variable Itinerary object 'itinerary'*/
+	public Itinerary getItinerary() {
+		return itinerary;
+	}
+	
+	 /** @return Instance variable PassengerList object 'list' containing passenger information.*/
+	public PassengerList getList() {
+		return list;
+	}
+
+	//SETTERS
+}//EO Class.

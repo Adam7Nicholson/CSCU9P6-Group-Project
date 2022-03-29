@@ -7,8 +7,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MaintenanceInspector extends JFrame
-        implements ActionListener {
+/**
+ * 
+ * @stereotype boundary/view/controller
+ *
+ */
+public class MaintenanceInspector extends JFrame implements ActionListener {
 
     private AircraftManagementDatabase model;
     private String title;

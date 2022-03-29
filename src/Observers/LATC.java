@@ -8,6 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observer;
 
+/**
+ * @stereotype boundary/view/controller
+ * @author 
+ *
+ */
 public class LATC extends JFrame
         implements ActionListener{
 

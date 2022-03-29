@@ -1,24 +1,26 @@
 package Passenger;
 
-/*Please put your student ID in so proper accreditation can be given for your work. 
-Ensure it is only your Student ID and *not* your name as marking is done anonymously.
-Please only add your name on this class if you have worked on this class.
-Work can take any form from refactoring to code writing and anything in between, of course
-You should always take credit for your work.*/
-/**
-* @author 2819600
-* @author 
-* @author 
-* @author 
-* @author 
-* @author 
-*/
+import java.util.ArrayList;
 
+/** Object for storing array of passenger's details on a flight. Contains one instance variable of an array of PassengerDetails objects.
+* @stereotype entity
+* @author 2819600
+*/
 public class PassengerList{
 	private PassengerDetails[] details;
 	
+	/**
+	 * Appends a passenger onto the PassengerDetails array.
+	 * @param details
+	 */
 	public void addPassenger(PassengerDetails details) {
-		this.details[this.details.length] = details;
+		//There are more graceful ways to achieve this, however it would involve changing the array into an ArrayList.
+		ArrayList<PassengerDetails> passengerDetailsArrayList = new ArrayList<PassengerDetails>();
+		for (int i = 0; i < this.details.length; i++) {
+			passengerDetailsArrayList.add(this.details[i]);
+		}
+		passengerDetailsArrayList.add(details);
+		this.details = (PassengerDetails[]) passengerDetailsArrayList.toArray();
 	}
 	
 }
