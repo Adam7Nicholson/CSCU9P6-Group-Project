@@ -1,6 +1,7 @@
 package Management;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Vector;
 
 import javax.swing.Action;
 
@@ -9,39 +10,29 @@ import Flights.Itinerary;
 import Management.ManagementRecord.Status;
 import Passenger.PassengerDetails;
 import Passenger.PassengerList;
+import Observers.GOC;
 
-/**
-* @author 2819600
-*/
+/**Class for handling validation of data requests and information changed. Stores and instantiates ManagementRecords in a local variable array.
+ * MAX_MANAGEMENT_RECORDS denotes the maximum number of ManagementRecords the database will allow for.
+ * @stereotype model
+ * @author 2819600
+ */
 
 public class AircraftManagementDatabase extends Observable{
-	public int maxMRs = 10;
+	public final int MAX_MANAGEMENT_RECORDS = 10;
 	private ManagementRecord[] MRs;
-	
+
 	/**
-	 * Returns the status the given record. 
-	 * If the given record does not exist, returns -1.
-	 * @param mCode
-	 * @return Int value of given record's status, if it exists
+	 * Creates an AirCraftManagementDatabase object, containing an array of ManagementRecords with a max size equal to the MAX_MANAGEMENT_RECORDS variable.
+	 * Once array is created, creates a new, empty ManagementRecord object for each array value.
 	 */
-	public int getStatus(int mCode) {
-		return isValidMCode(mCode) ? MRs[mCode].getStatus() : -1;
-	}
-	
-	/**
-	 * If the given status code and mCode are valid, changes the mCode's status equal to the newStatus value.
-	 * @param mCode
-	 * @param newStatus
-	 */
-	public void setStatus (int mCode, int newStatus) {
-		if (newStatus < ManagementRecord.Status.values().length || newStatus >-1) { //Validates Status
-			if (isValidMCode(mCode)) 
-				MRs[mCode].setStatus(newStatus);
-				setChanged();
-				notifyObservers();
+	public AircraftManagementDatabase() {
+		this.MRs = new ManagementRecord[MAX_MANAGEMENT_RECORDS];
+		for(int i = 0; i <MRs.length; i++){
+			MRs[i] = new ManagementRecord();
 		}
 	}
-	
+
 	/**
 	 * Internal method for verifying if mCodes are valid.
 	 * If the mCode is <0 or > Number of Records -1, returns false.
@@ -49,63 +40,19 @@ public class AircraftManagementDatabase extends Observable{
 	 * @return If the mCode corresponds to an existing record
 	 */
 	private boolean isValidMCode(int mCode) {
-		//If the mCode exceeds the len-1 or is less than 0, the record cannot exist, ergo returns -1.
-		//Equally, it will return false if the mCode exceeds the max number of MRs allowed.
-		if (mCode > maxMRs) return false;
-		if (mCode > (MRs.length-1)) return false;
-		if (mCode < 0) return false;
-		return true;
+		/*If the mCode exceeds the len-1 or is less than 0, the record cannot exist, ergo returns -1.
+		Equally, it will return false if the mCode exceeds the max number of MRs allowed.*/
+		return !((mCode > MAX_MANAGEMENT_RECORDS) || (mCode > (MRs.length-1)) || mCode < 0);
 	}
 	
-	/**
-	 * Internal method for verifying if a status code is valid.
+	/** Internal method for verifying if a status code is valid.
 	 * If the status exceeds the Statuses enum size-1 or is <0, it cannot be valid, ergo returns false.
 	 * Otherwise, returns true.
 	 * @param status
 	 * @return
 	 */
 	private boolean isValidStatus(int status) {
-		if (status > Status.values().length-1) return false;
-		if (status < 0) return false;
-		return true;
-	}
-	
-	/**
-	 * Returns the flight code of given Management Record
-	 * If the mCode is invalid, returns null.
-	 * @param mCode
-	 * @return The flight code of the given management record, if a valid code.
-	 */
-	public String getFlightCode(int mCode) {
-		if (isValidMCode(mCode)) {
-			return MRs[mCode].getFlightCode();
-		} else {
-			return null;
-		}
-	}
-	
-	/**
-	 * Returns an int array of all mCodes with the given status.
-	 * If the status code given is invalid, returns null.
-	 * @param statusCode
-	 * @return Int array of all mCodes with the given status
-	 */
-	public int[] getWithStatus(int statusCode) {
-		if (!(isValidStatus(statusCode))) return null;
-		
-		ArrayList<Integer> mCodesList = new ArrayList<Integer>();
-		
-		/*This function iterates through each Record using mCode as the initialised iterator
-		 * As the iterator in MRs works identically to a for loop, this is used. 
-		 * If the record's status code matches the given status code, the record's code is added to the list.*/
-		
-		for (int mCode = 0; mCode < MRs.length; mCode++) {
-			if (MRs[mCode].getStatus() == statusCode) 
-				mCodesList.add(mCode);
-		}
-		//If list is empty, returns null. Else, returns an array of the mCodes with the given status.
-		//For some unknown reason there is no kind way to parse Integer Lists to int arrays in Java
-		return mCodesList.isEmpty() ? null : mCodesList.stream().mapToInt(i -> i).toArray();
+		return !(status > Status.values().length-1 || status < 0);
 	}
 
 	/**
@@ -122,13 +69,13 @@ public class AircraftManagementDatabase extends Observable{
 				break;
 			}//EO If
 		}//EO For
-		
+
 		//TODO This method I am unsure as to its completion; If there is no found free MR, what happens?
 		//If you are reading this and I (Adam) have forgot to raise it with the group already, please raise this
 	}
-	
+
 	/**
-	 * Forwards the radarLostContact request to the relevant MR and notifies all observers of this change.
+	 * Forwards the radarLostContact request to the relevant MR and notifies all observers of this change, if the MR is valid.
 	 * @param mCode
 	 */
 	public void radarLostContact (int mCode) {
@@ -138,10 +85,10 @@ public class AircraftManagementDatabase extends Observable{
 			notifyObservers();
 		}
 	}
-	
+
 	/**
 	 * Indicates to the given record to taxi to the given gate, if the record is valid.
-	 * Notifies all observers once state has changed.
+	 * Notifies all observers once state has changed - if it has.
 	 * @param mCode
 	 * @param gateNumber
 	 */
@@ -152,10 +99,9 @@ public class AircraftManagementDatabase extends Observable{
 			notifyObservers();
 		}
 	}
-	
-	/**So long as the mCode is valid the method will;
-	 * Indicate to the given record that faults have been found, passing the description of the faults along
-	 * And notify any observers of this change
+
+	/** Indicates to the given record that faults have been found, passing the description of the faults along
+	 * And notifies any observers of this change, if they have occured.
 	 * @param mCode
 	 * @param description
 	 */
@@ -166,41 +112,184 @@ public class AircraftManagementDatabase extends Observable{
 			notifyObservers();
 		}
 	}
-	
+
 	/**
 	 * Appends a given passenger's details to the given Management Record, as long as it exists.
+	 * Once done, notifies any observers that the value has changed - if it has.
 	 * @param mCode
 	 * @param details
 	 */
 	public void addPassenger(int mCode, PassengerDetails details) {
 		if (isValidMCode(mCode)) {
 			MRs[mCode].addPassenger(details);
+			setChanged();
+			notifyObservers();
 		}
+	}
+
+	/**
+	 * Clears the list of passengers indicating that the UNLOADING process has been completed.
+	 * Once done, notifies any observers that the value has changed.
+	 * @param mCode
+	 */
+	public void clearPassengerList(int mCode) {
+		MRs[mCode].getPassengerList().clearPassengerList();
+		setChanged();
+		notifyObservers();
+	}
+
+	
+	/*
+	 * GETTERS & SETTERS
+	 */
+	
+	//GETTERS
+	
+	/**
+	 * Returns the status the given record.
+	 * If the given record does not exist, returns -1.
+	 * @param mCode
+	 * @return Int value of given record's status, if it exists
+	 */
+	public int getStatus(int mCode) {
+		return isValidMCode(mCode) ? MRs[mCode].getStatus() : -1;
+	}
+	
+	/**
+	 * Returns a string representation of the given record's status, should it exist.
+	 * If the code does not exist, returns null.
+	 * @param mCode
+	 * @return String representation of the Status enum.
+	 */
+	public String getStringStatus(int mCode){
+		return isValidMCode(mCode) ? Status.values()[getStatus(mCode)].toString() : null;
+	}
+	
+	/**
+	 * Returns the flight code of given Management Record
+	 * If the mCode is invalid, returns null.
+	 * @param mCode
+	 * @return The flight code of the given management record, if a valid code.
+	 */
+	public String getFlightCode(int mCode) {
+		return isValidMCode(mCode) ? MRs[mCode].getFlightCode() : null;
 	}
 	
 	/**
 	 * Returns the list of passengers for a given record, should it exist.
+	 * If the mCode does not exist, returns null.
 	 * @param mCode
 	 * @return
 	 */
 	public PassengerList getPassengerList(int mCode) {
-		if (isValidMCode(mCode)) {
-			return MRs[mCode].getPassengerList();
-		} else {
-			return null;
-		}
+		return isValidMCode(mCode) ? MRs[mCode].getPassengerList() : null;
 	}
 	
 	/**
 	 * Returns the Itinerary of a given record, should the record exist.
+	 * If the record does not exist, returns null.
 	 * @param mCode
 	 * @return
 	 */
 	public Itinerary getItinirary(int mCode) {
-		if(isValidMCode(mCode)) {
-			return MRs[mCode].getItinerary();
-		}else {
-			return null;
+		return isValidMCode(mCode) ? MRs[mCode].getItinerary() : null;
+	}
+	
+	 /** @param flightCode : String representation of flight code
+	 * @return mCode of next ManagementRecord with the given flight code.
+	 */
+	public int getMCode (String flightCode){
+		for (int i = 0; i < MRs.length; i++) {
+			if(MRs[i].getFlightCode().equalsIgnoreCase(flightCode)){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Get the MRs from the Radar Transceiver that will go to GOC
+	 * @return A vector of the flightCodes of MRs that have statuses different from FREE and IN TRANSIT
+	 * @author Martin Petrov
+	 * @author 2819600 (Minor legibility tweaks)
+	 */
+	public Vector<String> getGocMRs (){
+		Vector<String> occupiedMRs = new Vector<String>();
+		for (int i =0; i < MRs.length; i++) {
+			if(MRs[i].getStatus() != Status.FREE.ordinal() && MRs[i].getStatus() != Status.IN_TRANSIT.ordinal()){
+				occupiedMRs.add(MRs[i].getFlightCode());
+			}//EO If
+		}//EO For
+		return occupiedMRs;
+	}
+
+	/**
+	 * Get the MRs from the Radar Transceiver that will go to LATC
+	 * @return ArrayList of all MRs that have status different from FREE
+	 * @author Martin Petrov
+	 * @author 2819600 (Minor legibility tweaks)
+	 */
+	public ArrayList<String> getLatcMRs (){
+		ArrayList<String> occupiedMRs = new ArrayList<String>();
+		for (int i =0; i < MRs.length; i++) {
+			if(MRs[i].getStatus() != Status.FREE.ordinal()){
+				occupiedMRs.add(MRs[i].getFlightCode());
+			}//EO If
+		}//EO For
+		return occupiedMRs;
+	}
+	
+	/**
+	 * Returns an int array of all mCodes with the given status.
+	 * If the status code given is invalid, returns null.
+	 * @param statusCode
+	 * @return Int array of all mCodes with the given status
+	 */
+	public int[] getWithStatus(int statusCode) {
+		ArrayList<Integer> mCodesList = getWithStatusArrayList(statusCode);
+		
+		//If the arraylist is empty or null, returns null. Else, maps the arraylist to an array.
+		//For some reason, Java has no graceful way (that I know of) of mapping Integer ArrayLists to primitive int arrays.
+		return mCodesList.isEmpty() || mCodesList == null ? null : mCodesList.stream().mapToInt(i -> i).toArray();
+	}
+	
+	/**
+	 * Returns an integer arraylist of all mCodes with the given status.
+	 * If the status code given is invalid, returns null.
+	 * @param statusCode
+	 * @return Int arraylist of all mCodes with the given status
+	 */
+	public ArrayList<Integer> getWithStatusArrayList(int statusCode){
+		if (!(isValidStatus(statusCode))) return null;
+
+		ArrayList<Integer> mCodesList = new ArrayList<Integer>();
+
+		/*This function iterates through each Record using mCode as the initialised iterator
+		 * As the iterator in MRs works identically to a for loop, this is used.
+		 * If the record's status code matches the given status code, the record's code is added to the list.*/
+
+		for (int mCode = 0; mCode < MRs.length; mCode++) {
+			if (MRs[mCode].getStatus() == statusCode)
+				mCodesList.add(mCode);
+		}
+		
+		//If list is empty, returns null. Else, returns an arrayList of the mCodes with the given status.
+		return mCodesList.isEmpty() ? null : mCodesList;
+	}
+	
+	//SETTERS
+	
+	/**
+	 * If the given status code and mCode are valid, changes the mCode's status equal to the newStatus value.
+	 * @param mCode
+	 * @param newStatus
+	 */
+	public void setStatus (int mCode, int newStatus) {
+		if (newStatus < ManagementRecord.Status.values().length || newStatus >-1) { //Validates Status
+			if (isValidMCode(mCode))
+				MRs[mCode].setStatus(newStatus);
+			setChanged();
+			notifyObservers();
 		}
 	}
 	

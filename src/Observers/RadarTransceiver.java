@@ -5,9 +5,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-
-public class RadarTransceiver extends JFrame
-        implements ActionListener {
+/**
+ * @stereotype boundary/view/controller
+ * @author 
+ *
+ */
+public class RadarTransceiver extends JFrame implements ActionListener {
 
     private AircraftManagementDatabase model;
     private String title;
