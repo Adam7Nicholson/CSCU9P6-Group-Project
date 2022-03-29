@@ -77,7 +77,7 @@ public class MaintenanceInspector extends JFrame implements ActionListener {
         reportFaults = new JButton("Report Faults");
         reportFaults.addActionListener(this);
         reportFaults.setEnabled(false);
-        complete = new JButton("Report Faults");
+        complete = new JButton("Complete");
         complete.addActionListener(this);
         complete.setEnabled(false);
 

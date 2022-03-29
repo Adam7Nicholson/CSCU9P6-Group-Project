@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observer;
 
 /**
  * @stereotype boundary/view/controller
@@ -13,7 +14,7 @@ import java.awt.event.ActionListener;
  *
  */
 public class LATC extends JFrame
-        implements ActionListener {
+        implements ActionListener{
 
     private AircraftManagementDatabase model;
     private String title;

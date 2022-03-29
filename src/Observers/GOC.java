@@ -9,11 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
+
+import Gate.GateInfoDatabase;
 
 public class GOC extends JFrame implements ActionListener {
 
     private String title;
     private AircraftManagementDatabase model;
+    private GateInfoDatabase gateData;
     
     private JPanel left;
     private JPanel right;
@@ -35,14 +39,17 @@ public class GOC extends JFrame implements ActionListener {
     private JButton grantTaxiRunwayClearance;
     private JTextArea planeDetailsArea;
 
+    
+    private Vector<String> prob;
     /**
      *
-     * @param model the model (AircraftManagementDatabase) that LATC receive inputs and sends messages to
+     * @param GOC receive inputs and sends messages
      * @param title the title of this screen
      */
-    public GOC(AircraftManagementDatabase model, String title){
+    public GOC(GateInfoDatabase gateData, AircraftManagementDatabase model, String title){
         this.title = title;
         this.model = model;
+        this.gateData = gateData;
         
         setTitle(title);
         setLocation(450,350);
@@ -58,9 +65,13 @@ public class GOC extends JFrame implements ActionListener {
         planesList = new JList();
         planesList.setPreferredSize(new Dimension(90,150));
         
+        planesList.setListData(showPlanes());
+        
         gateStatusL = new JLabel("Gate Status");
         gateList = new JList();
         gateList.setPreferredSize(new Dimension(90,150));
+        
+        gateList.setListData(showGates());
         
         left.add(planesL);
         left.add(planesList);
@@ -113,5 +124,30 @@ public class GOC extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+    }
+    
+    public Vector<String> showGates()
+    {
+    	Vector<String> gates = new Vector<String>();
+    	//int gStatusesNumber = gateData.getStatuses().length;
+    	int i = 1;
+    	for(int n : gateData.getStatuses())
+    	{
+    		if(n == 0) gates.add("Gate " + i +" - Free");
+    		else if(n == 1) gates.add("Gate " + i +" - Reserverd");
+    		else gates.add("Gate " + i +" - Occupied");
+    		i++;
+    	}
+    	i = 1;
+    	return gates;
+    }
+    
+    //To be continued....
+    public Vector<String> showPlanes()
+    {
+    	Vector<String> planeCodes = new Vector<String>();
+    	planeCodes.add("XY789");
+    	planeCodes.add("RY444");
+    	return planeCodes;
     }
 }

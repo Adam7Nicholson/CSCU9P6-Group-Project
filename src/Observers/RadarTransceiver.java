@@ -1,8 +1,15 @@
 package Observers;
+import Flights.FlightDescriptor;
+import Flights.Itinerary;
 import Management.AircraftManagementDatabase;
+import Passenger.PassengerDetails;
+import Passenger.PassengerList;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Vector;
 import javax.swing.*;
 
 /**
@@ -10,7 +17,11 @@ import javax.swing.*;
  * @author 
  *
  */
-public class RadarTransceiver extends JFrame implements ActionListener {
+
+
+public class RadarTransceiver extends JFrame
+        implements ActionListener, Observer {
+
 
     private AircraftManagementDatabase model;
     private String title;
@@ -38,8 +49,9 @@ public class RadarTransceiver extends JFrame implements ActionListener {
     private JButton detectFlight;
 
     // will be in panel3
-    //TODO WHAT DATA SHOULD IT SHOW???
-    private JList UNKNOWN;
+    private JList<String> addPassengersList;
+    private DefaultListModel addPassengerModel;
+    private Vector<String> addPassengerVector;
 
     //will be in panel4
     private JLabel currentPlanes;
@@ -52,12 +64,13 @@ public class RadarTransceiver extends JFrame implements ActionListener {
 
 
     /**
-     *
+     * A constructor
      * @param model the model (AircraftManagementDatabase) that RadarTransceiver receive inputs and sends messages to
      * @param title the title of this screen
      */
     public RadarTransceiver(AircraftManagementDatabase model, String title) {
 
+        addPassengerVector = new Vector<String>();
         // Record reference to the model
         this.model = model;
         this.title = title;
@@ -103,6 +116,7 @@ public class RadarTransceiver extends JFrame implements ActionListener {
         panel2.add(addPassenger);
         addPassenger.addActionListener(this);
         detectFlight = new JButton("Detect Flight");
+        detectFlight.setEnabled(false);
         panel2.add(detectFlight);
         detectFlight.addActionListener(this);
         window.add(panel2);
@@ -110,9 +124,9 @@ public class RadarTransceiver extends JFrame implements ActionListener {
         //panel 3 components
         panel3 = new JPanel();
         panel3.setPreferredSize(new Dimension(100,300));
-        UNKNOWN = new JList();
-        UNKNOWN.setPreferredSize(new Dimension(100,130));
-        panel3.add(UNKNOWN);
+        addPassengersList = new JList(addPassengerVector);
+        addPassengersList.setPreferredSize(new Dimension(100,130));
+        panel3.add(addPassengersList);
         window.add(panel3);
 
         //panel4 components
@@ -142,6 +156,8 @@ public class RadarTransceiver extends JFrame implements ActionListener {
         // Display the frame
         setVisible(true);
 
+        addPassengerModel = new DefaultListModel();
+        addPassengersList.setModel(addPassengerModel);
     } // constructor
 
     /**
@@ -150,6 +166,58 @@ public class RadarTransceiver extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == detectFlight){
+            Itinerary itinerary = new Itinerary(flightFromTextField.getText(), flightToTextField.getText(),nextStopTextField.getText());
+            PassengerList passList = new PassengerList();
+            System.out.println(addPassengerVector.size());
+            for(int i = 0; i < addPassengerVector.size(); i++){
+                PassengerDetails details = new PassengerDetails(addPassengerVector.get(i));
+                passList.addPassenger(details);
+            }
+            FlightDescriptor fd = new FlightDescriptor(flightCodeTextField.getText(), itinerary, passList);
+            model.radarDetect(fd);
+        }
+        if(e.getSource()== addPassenger){
+            //input validation  case 1: if passenger's name is provide but the flight details are not complete
+            if((flightCodeTextField.getText().isEmpty() || flightToTextField.getText().isEmpty() || flightFromTextField.getText().isEmpty()
+                    || nextStopTextField.getText().isEmpty()) && !passengerNameTextField.getText().isEmpty()){
+                passengerNameTextField.setText("Please provide flight details");
+                //input validation case 2: if flight details are complete but passenger's name is not provided
+            } else if (!flightCodeTextField.getText().isEmpty() && !flightToTextField.getText().isEmpty() && !flightFromTextField.getText().isEmpty()
+                    && !nextStopTextField.getText().isEmpty() && passengerNameTextField.getText().isEmpty()){
+                passengerNameTextField.setText("Enter a passenger's name");
+                //input validation case 3: if passenger's name and at least 1 of flight fields are empty
+            } else if (flightCodeTextField.getText().isEmpty() || flightToTextField.getText().isEmpty() || flightFromTextField.getText().isEmpty()
+                    || nextStopTextField.getText().isEmpty() || passengerNameTextField.getText().isEmpty()){
+                passengerNameTextField.setText("Please provide full details");
+            } else{
+                addPassengerVector.addElement(passengerNameTextField.getText());
+                passengerNameTextField.setText("");
+                refreshAddPassengerList();
+                if(addPassengerVector.size() > 0){
+                    detectFlight.setEnabled(true);
+                    flightCodeTextField.setEnabled(false);
+                    flightToTextField.setEnabled(false);
+                    flightFromTextField.setEnabled(false);
+                    nextStopTextField.setEnabled(false);
+                }
+            }
 
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
+
+    /**
+     * Refresh and show the contents of the JList addPassengerList
+     */
+    public void refreshAddPassengerList(){
+        addPassengerModel.removeAllElements();
+        for(int i = 0; i < addPassengerVector.size(); i++){
+            addPassengerModel.addElement(addPassengerVector.get(i));
+        }
     }
 }
