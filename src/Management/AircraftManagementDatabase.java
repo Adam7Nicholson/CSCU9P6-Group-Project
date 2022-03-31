@@ -20,6 +20,7 @@ import Observers.GOC;
 
 public class AircraftManagementDatabase extends Observable{
 	public final int MAX_MANAGEMENT_RECORDS = 10;
+	public final int MAX_PASSENGERS = 5;
 	private ManagementRecord[] MRs;
 
 	/**
@@ -306,5 +307,69 @@ public class AircraftManagementDatabase extends Observable{
 			notifyObservers();
 		}
 	}
+	
+	/**
+	 * Returns instance variable MAX_PASSENGERS
+	 * @return
+	 */
+	public int getMaxPassengers() {
+		return MAX_PASSENGERS; 
+	}
+
+	/**
+	 * Returns a list of all MRs with code:
+	 * 0, 8, 9, 10, 11, 12
+	 * @return
+	 */
+	public ArrayList<String> getMaintanceCleaningMRs() {
+		ArrayList<String> maintenancecleaningMRs = new ArrayList<String>();
+		for (int i = 0; i < MRs.length; i++) {
+			if (MRs[i].getStatus() != Status.FREE.ordinal() && (MRs[i].getStatus() == 8 || MRs[i].getStatus() == 9
+					|| MRs[i].getStatus() == 10 || MRs[i].getStatus() == 11 || MRs[i].getStatus() == 12)) {
+				maintenancecleaningMRs.add(MRs[i].getFlightCode());
+			}
+		}
+		return maintenancecleaningMRs;
+	}
+
+	/**
+	 * Returns the gate of an MR, should it exist.
+	 * If it does not, returns -1.
+	 * @param mCode
+	 * @return
+	 */
+	public int getGate(int mCode) {
+		if (isValidMCode(mCode)) {
+			return MRs[mCode].getGate();
+		} else {
+			return -1;
+		}
+	}
+
+	/**
+	 * Returns the fault description of a given mCode, should it exist. If not, returns null.
+	 * @param mCode
+	 * @return
+	 */
+	public String getFaults (int mCode){
+		if (isValidMCode(mCode)) {
+			return MRs[mCode].getFaultDescription();
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Clears the given gate for an mCode and notifies all subscribers.
+	 * @param mCode
+	 */
+	public void clearGate (int mCode) {
+		if (isValidMCode(mCode)) {
+			MRs[mCode].clearGate();
+		}
+		setChanged();
+		notifyObservers();
+	}
+	
 	
 }

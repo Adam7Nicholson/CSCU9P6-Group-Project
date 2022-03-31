@@ -161,6 +161,14 @@ public class ManagementRecord {
 		return this.status;
 	}
 	
+	/**
+	 * 
+	 * @return The instance variable string faultDescription
+	 */
+	public String getFaultDescription() {
+		return this.faultDescription;
+	}
+	
 	//SETTERS
 	
 	/**
@@ -178,5 +186,7 @@ public class ManagementRecord {
 	public void setStatus (Status newStatus) {
 		this.status = newStatus.ordinal();
 	}
+
+
 }//EO Class
 
