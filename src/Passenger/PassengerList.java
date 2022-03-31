@@ -1,24 +1,40 @@
 package Passenger;
 
-/*Please put your student ID in so proper accreditation can be given for your work. 
-Ensure it is only your Student ID and *not* your name as marking is done anonymously.
-Please only add your name on this class if you have worked on this class.
-Work can take any form from refactoring to code writing and anything in between, of course
-You should always take credit for your work.*/
-/**
-* @author 2819600
-* @author 
-* @author 
-* @author 
-* @author 
-* @author 
-*/
+import java.util.ArrayList;
+import java.util.Vector;
 
+/** Object for storing arraylist of passenger's details on a flight. Contains one instance variable of an arraylist of PassengerDetails objects.
+* @stereotype entity
+* @author 2819600
+*/
 public class PassengerList{
-	private PassengerDetails[] details;
+	private ArrayList<PassengerDetails> details;
 	
+	/**
+	 * Appends a passenger onto the PassengerDetails arrayList.
+	 * @param details
+	 */
 	public void addPassenger(PassengerDetails details) {
-		this.details[this.details.length] = details;
+		this.details.add(details);
 	}
 	
+	/**
+	 * 
+	 * @return A String Vector of all passenger names
+	 */
+	public Vector<String> getList (){
+		Vector<String> detailsList =  new Vector<String>();
+		for (PassengerDetails passenger : details) {
+			detailsList.addElement(passenger.getName());
+		}
+		return detailsList;
+	}
+	
+	/**
+	 * 
+	 * @return Size of the passengerDetails arraylist
+	 */
+	public int size() {
+		return details.size();
+	}
 }

@@ -35,6 +35,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * @stereotype boundary/view
+ * @author 
+ *
+ */
 public class PublicInfo extends JFrame implements ActionListener{
 
 	private AircraftManagementDatabase model;

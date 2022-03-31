@@ -3,24 +3,18 @@ package Gate;
 import java.util.List;
 import java.util.Vector;
 
-/*Please put your student ID in so proper accreditation can be given for your work. 
-Ensure it is only your Student ID and *not* your name as marking is done anonymously.
-Please only add your name on this class if you have worked on this class.
-Work can take any form from refactoring to code writing and anything in between, of course
-You should always take credit for your work.*/
+
 /**
+* @stereotype model
 * @author 2819600
 * @author 2816391
-* @author 
-* @author 
-* @author 
-* @author 
 */
 
 public class GateInfoDatabase {
 	private Vector<Gate> gates = new Vector<Gate>();
 	public int maxGateNumber = 2;
 	
+
 	public void addGate(Gate g) {
 		gates.add(g);
 	}
@@ -42,18 +36,57 @@ public class GateInfoDatabase {
 		i = 0;
 		return statuses;
 	}
+
 	
+	/**
+	 * 
+	 * @param gateNumber
+	 * @param mCode
+	 */
 	public void allocate(int gateNumber, int mCode) {
 		
 	}
 	
+	/**
+	 * 
+	 * @param gateNumber
+	 * @param mCode
+	 */
 	public void docked(int gateNumber, int mCode) {
 		
 	}
 	
+	/**
+	 * 
+	 * @param gateNumber
+	 * @param mCode
+	 */
 	public void departed(int gateNumber, int mCode) {
 		
 	}
 	
+	/*
+	 * GETTERS & SETTERS
+	 */
 	
+	//GETTERS 
+	/**
+	 * 
+	 * @param gateNumber
+	 * @return
+	 */
+	public int getStatus(int gateNumber) {
+		return this.getStatus(gateNumber);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int[] getStatuses() {
+		int statuses[] = {};
+		for (Gate g : this.gates) statuses[statuses.length] = g.getStatus();
+		return statuses;
+	}
+	//SETTERS
 }
