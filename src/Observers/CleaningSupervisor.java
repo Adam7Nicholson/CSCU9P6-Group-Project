@@ -25,9 +25,7 @@ You should always take credit for your work.*/
  * @url element://model:project::SAAMS/design:view:::id3y5z3cko4qme4cko4sw81
  * @url element://model:project::SAAMS/design:node:::id15rnfcko4qme4cko4swib.node107
  * @url element://model:project::SAAMS/design:view:::id15rnfcko4qme4cko4swib
- * @author 2816391
  */
-//package Observers;
 
 import Management.AircraftManagementDatabase;
 import javax.swing.*;
@@ -50,9 +48,6 @@ public class CleaningSupervisor extends JFrame implements ActionListener, Observ
     private int selectedPlaneIndex;
     private String selectedPlane = "";
     int mCode = -1;
-
-
-public class CleaningSupervisor extends JFrame implements ActionListener {
 
     private AircraftManagementDatabase model;
     private String title;
