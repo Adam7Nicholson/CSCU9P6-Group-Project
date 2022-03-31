@@ -37,4 +37,12 @@ public class PassengerList{
 	public int size() {
 		return details.size();
 	}
+	
+	/**
+	 * Clears the passengerList
+	 */
+	public void clearPassengerList()
+	{
+		details.clear();
+	}
 }
