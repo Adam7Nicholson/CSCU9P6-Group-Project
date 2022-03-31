@@ -1,11 +1,31 @@
 package Observers;
-
+/**
+ * @author 2823424
+ * @author 2816391
+ * @author
+ * @author
+ * @author
+ * @author
+ */
 import Management.AircraftManagementDatabase;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Vector;
+
+
+public class RefuellingSupervisor extends JFrame
+        implements ActionListener,Observer {
+
+    private int selectedPlaneIndex;
+    private String selectedPlane = "";
+    private int mCode = -1;
 
 /**
  * 
@@ -13,6 +33,7 @@ import java.awt.event.ActionListener;
  *
  */
 public class RefuellingSupervisor extends JFrame implements ActionListener {
+
 
     private AircraftManagementDatabase model;
     private String title;
@@ -23,7 +44,7 @@ public class RefuellingSupervisor extends JFrame implements ActionListener {
     //will be in panel 1
     private JLabel planesBeingRefuelled;
     private JList planesBeingRefuelledList;
-
+    private DefaultListModel planesListModel;
 
     //will be in panel 2
     private JButton planeIsRefuelledBtn;
@@ -39,8 +60,8 @@ public class RefuellingSupervisor extends JFrame implements ActionListener {
         this.title = title;
 
         setTitle("Refuelling Supervisor");
-        setLocation(1000,450);
-        setSize(380,330);
+        setLocation(1440,10);
+        setSize(330,330);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         Container window = getContentPane();
         window.setLayout(new FlowLayout());
@@ -53,6 +74,26 @@ public class RefuellingSupervisor extends JFrame implements ActionListener {
         planesBeingRefuelledList = new JList();
         planesBeingRefuelledList.setPreferredSize(new Dimension(140,250));
 
+        //A mouse listener that enables to select a MR from the planesList
+        planesBeingRefuelledList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent me) {
+                if (me.getClickCount() == 1) {
+                    JList target = (JList)me.getSource();
+                    int index = target.locationToIndex(me.getPoint());
+                    if (index >= 0) {
+                        Object item = target.getModel().getElementAt(index);
+                        selectedPlane = item.toString();
+                        selectedPlaneIndex = model.getMCode(selectedPlane);
+                        mCode = model.getMCode(selectedPlane);
+                        selectAPlane.setText(model.getFlightCode(selectedPlaneIndex));
+
+                        if(model.getStatus(selectedPlaneIndex) == 13) planeIsRefuelledBtn.setEnabled(true);
+                    }
+                }
+            }
+        }
+        );
+
         panel1.add(planesBeingRefuelled);
         panel1.add(planesBeingRefuelledList);
         window.add(panel1);
@@ -62,6 +103,7 @@ public class RefuellingSupervisor extends JFrame implements ActionListener {
         panel2.setPreferredSize(new Dimension(150,300));
         planeIsRefuelledBtn = new JButton("Plane is Refuelled");
         planeIsRefuelledBtn.addActionListener(this);
+        planeIsRefuelledBtn.setEnabled(false);
         selectAPlane = new JLabel("No planes selected");
 
         panel2.add(planeIsRefuelledBtn);
@@ -70,9 +112,51 @@ public class RefuellingSupervisor extends JFrame implements ActionListener {
         window.add(panel2);
 
         setVisible(true);
+
+        planesListModel = new DefaultListModel();
+        planesBeingRefuelledList.setModel(planesListModel);
     }
+
+    /**
+     * A method that is invoked whenever an action happens (a button click)
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Plane Is Refuelled button is clicked - Changes the status of the selected MR to READY_PASSENGERS
+        if(e.getSource()==planeIsRefuelledBtn){
+            if(model.getStatus(selectedPlaneIndex) == 13) model.setStatus(selectedPlaneIndex, 14);
+        }
+    }
 
+    /**
+     * A method that is automatically called if there are any changes to the model
+     * @param o
+     * @param arg
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        int[] planesWithStatus = model.getWithStatus(13);
+        Vector<String> planes = new Vector<String>();
+        if(planesWithStatus != null) {
+            for(int i = 0; i < planesWithStatus.length; i++) {
+                planes.addElement(model.getFlightCode(planesWithStatus[i]));
+            }
+        }
+        planeIsRefuelledBtn.setEnabled(false);
+        selectAPlane.setText("No planes selected");
+        refreshList(planesListModel, planes);
+    }
+
+    /**
+     * A method that refreshes a JList
+     * @param model
+     * @param vector
+     */
+    public void refreshList(DefaultListModel model, Vector vector){
+        model.removeAllElements();
+        for(int i = 0; i < vector.size(); i++){
+            model.addElement(vector.get(i));
+        }
     }
 }
