@@ -9,7 +9,10 @@ import java.util.Vector;
 */
 public class PassengerList{
 	private ArrayList<PassengerDetails> details;
-	
+
+	public PassengerList() {
+		this.details = new ArrayList<PassengerDetails>();
+	}
 	/**
 	 * Appends a passenger onto the PassengerDetails arrayList.
 	 * @param details

@@ -247,20 +247,6 @@ public class AircraftManagementDatabase extends Observable{
 	 * @return Int array of all mCodes with the given status
 	 */
 	public int[] getWithStatus(int statusCode) {
-		ArrayList<Integer> mCodesList = getWithStatusArrayList(statusCode);
-		
-		//If the arraylist is empty or null, returns null. Else, maps the arraylist to an array.
-		//For some reason, Java has no graceful way (that I know of) of mapping Integer ArrayLists to primitive int arrays.
-		return mCodesList.isEmpty() || mCodesList == null ? null : mCodesList.stream().mapToInt(i -> i).toArray();
-	}
-	
-	/**
-	 * Returns an integer arraylist of all mCodes with the given status.
-	 * If the status code given is invalid, returns null.
-	 * @param statusCode
-	 * @return Int arraylist of all mCodes with the given status
-	 */
-	public ArrayList<Integer> getWithStatusArrayList(int statusCode){
 		if (!(isValidStatus(statusCode))) return null;
 
 		ArrayList<Integer> mCodesList = new ArrayList<Integer>();
@@ -273,9 +259,9 @@ public class AircraftManagementDatabase extends Observable{
 			if (MRs[mCode].getStatus() == statusCode)
 				mCodesList.add(mCode);
 		}
-		
-		//If list is empty, returns null. Else, returns an arrayList of the mCodes with the given status.
-		return mCodesList.isEmpty() ? null : mCodesList;
+		//If list is empty, returns null. Else, returns an array of the mCodes with the given status.
+		//For some unknown reason there is no kind way to parse Integer Lists to int arrays in Java
+		return mCodesList.isEmpty() ? null : mCodesList.stream().mapToInt(i -> i).toArray();
 	}
 	
 	/**
