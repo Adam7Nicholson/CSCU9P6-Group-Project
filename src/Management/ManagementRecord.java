@@ -109,6 +109,21 @@ public class ManagementRecord {
 		}
 	}
 	
+	/**
+	 * Clears the current MR's assigned gate, assigning it as -1.
+	 */
+	public void clearGate() {
+		this.gateNumber = -1;
+	}
+
+	/**
+	 * 
+	 * @return Instance variable integer 'gateNumber' used to identify current allocated gate
+	 */
+	public int getGate() {
+		return this.gateNumber;
+	}
+	
 	/*
 	 * GETTERS & SETTERS
 	 */
@@ -140,8 +155,7 @@ public class ManagementRecord {
 	}
 
 	/**
-	 * Returns the integer representation of the Record's status.
-	 * @return
+	 * @return the integer representation of the Record's status.
 	 */
 	public int getStatus() {
 		return this.status;
