@@ -6,13 +6,13 @@ Please only add your name on this class if you have worked on this class.
 Work can take any form from refactoring to code writing and anything in between, of course
 You should always take credit for your work.*/
 /**
-* @author 2816391
-* @author 
-* @author 
-* @author 
-* @author 
-* @author 
-*/
+ * @author 2816391
+ * @author
+ * @author
+ * @author
+ * @author
+ * @author
+ */
 
 /**
  * An interface to SAAMS:
@@ -34,58 +34,59 @@ import Management.AircraftManagementDatabase;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Vector;
 
-/**
- * @stereotype boundary/view
- * @author 
- *
- */
-public class PublicInfo extends JFrame implements ActionListener{
+public class PublicInfo extends JFrame implements Observer{
 
 	private AircraftManagementDatabase model;
 	private String title;
 	private JTable infoTable;
+	private DefaultTableModel tModel;
 	private String headers[] = {"Flights", "From", "To", "Gate", "Status"};
 	private JScrollPane tablePanel;
-	private JButton reload;
-  
+
 	public PublicInfo(AircraftManagementDatabase model, String title)
 	{
 		this.title = title;
 		this.model = model;
-		
+
 		setTitle("Public Information Interface");
-    	setLocation(850,700);
-    	setSize(500, 350);
-    	setDefaultCloseOperation(EXIT_ON_CLOSE);
-    	Container window = getContentPane();
-    	window.setLayout(new FlowLayout(FlowLayout.CENTER));
-    	
-    	String[][] data = {{"XYZ789", "Amsterdam", "Stirling", "N/A", "Landing"}};
-    	DefaultTableModel tModel = new DefaultTableModel();
-    	tModel.addColumn("Flights");
-    	tModel.addColumn("From");
-    	tModel.addColumn("To");
-    	tModel.addColumn("Gate");
-    	tModel.addColumn("Status");
-     	infoTable = new JTable(tModel);
-    	infoTable.setPreferredScrollableViewportSize(new Dimension(450, 250));
-    	tablePanel = new JScrollPane(infoTable);
-    	
-    	reload = new JButton("Reaload");
-    	reload.addActionListener(this);
-    	
-    	window.add(tablePanel);
-    	window.add(reload);
-    	
-    	setVisible(true);
-    	
+		if(title.equalsIgnoreCase("Public Information Interface 1"))setLocation(380,750);
+		else setLocation(910,750);
+		setSize(540, 300);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		Container window = getContentPane();
+		window.setLayout(new FlowLayout(FlowLayout.CENTER));
+		tModel = new DefaultTableModel(null,headers);
+		infoTable = new JTable(tModel);
+		infoTable.setPreferredScrollableViewportSize(new Dimension(510, 270));
+		tablePanel = new JScrollPane(infoTable);
+
+		window.add(tablePanel);
+
+		setVisible(true);
+
 	}
 
-@Override
-public void actionPerformed(ActionEvent e) {
-	// TODO Auto-generated method stub
-	
-}
+	@Override
+	public void update(Observable o, Object arg) {
+		//Removes all the elemets to update the table with the new list.
+		tModel.setRowCount(0);
+		
+		//Goes through all the Detected Management Records
+		for(String s : model.getDetectedMRs()) {
+			Vector<String> publicInfoRow = new Vector<String>();
+			int mCode = model.getMCode(s);
+			publicInfoRow.add(s);
+			publicInfoRow.add(model.getItinirary(mCode).getFrom());
+			publicInfoRow.add(model.getItinirary(mCode).getTo());
+			if(model.getGate(mCode) == -1)publicInfoRow.add("N/A");
+			else publicInfoRow.add(String.valueOf(model.getGate(mCode) + 1));
+			publicInfoRow.add(model.getStringStatus(mCode));
+			tModel.addRow(publicInfoRow);
+		}
+	}
 
 }
