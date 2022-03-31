@@ -14,8 +14,8 @@ You should always take credit for your work.*/
 * @author 
 * @author 
 *
- * 
- * An interface to SAAMS:
+
+/**An interface to SAAMS:
  * Cleaning Supervisor Screen:
  * Inputs events from the Cleaning Supervisor, and displays aircraft information.
  * This class is a controller for the AircraftManagementDatabase: sending it messages to change the aircraft status information.
@@ -25,6 +25,7 @@ You should always take credit for your work.*/
  * @url element://model:project::SAAMS/design:view:::id3y5z3cko4qme4cko4sw81
  * @url element://model:project::SAAMS/design:node:::id15rnfcko4qme4cko4swib.node107
  * @url element://model:project::SAAMS/design:view:::id15rnfcko4qme4cko4swib
+ * @author 2816391
  */
 //package Observers;
 
@@ -40,10 +41,18 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
+/**
+ * 
+ * @stereotype boundary/view/controller
+ *
+ */
 public class CleaningSupervisor extends JFrame implements ActionListener, Observer {
     private int selectedPlaneIndex;
     private String selectedPlane = "";
     int mCode = -1;
+
+
+public class CleaningSupervisor extends JFrame implements ActionListener {
 
     private AircraftManagementDatabase model;
     private String title;

@@ -1,7 +1,7 @@
 package Observers;
 /**
  * @author 2823424
- * @author
+ * @author 2816391
  * @author
  * @author
  * @author
@@ -19,12 +19,21 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
+
 public class RefuellingSupervisor extends JFrame
         implements ActionListener,Observer {
 
     private int selectedPlaneIndex;
     private String selectedPlane = "";
     private int mCode = -1;
+
+/**
+ * 
+ * @stereotype boundary/view/controller
+ *
+ */
+public class RefuellingSupervisor extends JFrame implements ActionListener {
+
 
     private AircraftManagementDatabase model;
     private String title;

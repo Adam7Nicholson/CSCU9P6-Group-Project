@@ -20,11 +20,19 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
+
 public class MaintenanceInspector extends JFrame
         implements ActionListener, Observer {
     private int selectedPlaneIndex;
     private String selectedPlane = "";
     int mCode = -1;
+
+/**
+ * 
+ * @stereotype boundary/view/controller
+ *
+ */
+public class MaintenanceInspector extends JFrame implements ActionListener {
 
     private AircraftManagementDatabase model;
     private String title;

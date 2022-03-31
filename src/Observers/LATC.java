@@ -21,6 +21,11 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
+/**
+ * @stereotype boundary/view/controller
+ * @author 
+ *
+ */
 public class LATC extends JFrame
         implements ActionListener, Observer{
 

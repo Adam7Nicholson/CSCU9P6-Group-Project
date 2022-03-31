@@ -5,22 +5,18 @@ import Flights.Itinerary;
 import Passenger.PassengerDetails;
 import Passenger.PassengerList;
 
-/*Please put your student ID in so proper accreditation can be given for your work. 
-Ensure it is only your Student ID and *not* your name as marking is done anonymously.
-Please only add your name on this class if you have worked on this class.
-Work can take any form from refactoring to code writing and anything in between, of course
-You should always take credit for your work.*/
-/**
-* @author 2819600
-* @author 
-* @author 
-* @author 
-* @author 
-* @author 
+/**Class for storing information on a given flight record, as well as containing the enum object for a record's status.
+ * @stereotype entity
+ * @author 2819600
 */
 
 public class ManagementRecord {
-	
+
+	/**
+	 * Enum object used to denote the status code of a record
+	 * @author Adam
+	 *
+	 */
 	enum Status{
 		FREE,
 		IN_TRANSIT,
@@ -42,42 +38,56 @@ public class ManagementRecord {
 		AWAITING_TAKEOFF,
 		DEPARTING_THROUGH_LOCAL_AIRSPACE
 	}
-  
+
 	private int status;
 	private int gateNumber;
 	private String flightCode;
 	private Itinerary itinerary;
 	private PassengerList passengerList;
 	private String faultDescription;
-	
-	public void setStatus (int newStatus) {
-		this.status = newStatus;
-	}
-  
-	public void setStatus (Status newStatus) {
-		this.status = newStatus.ordinal();
+
+	/**
+	 * Instantiates managementRecord object and sets status to FREE, leaving instance variables blank to be assigned from a FlightDescriptor.
+	 */
+	public ManagementRecord() {
+		setStatus(Status.FREE.ordinal());
 	}
 
-	public int getStatus() {
-		return this.status;
-	}
-	
-	public String getFlightCode() {
-		return flightCode;
-	}
-	
+	/**
+	 * Assigns instance variables to those of the given FlightDescriptor, filling the record.
+	 * @param fd
+	 */
 	public void radarDetect(FlightDescriptor fd) {
-		//TODO Complete Method
+		if(getStatus() == Status.FREE.ordinal()) {
+			setStatus (fd.getItinerary().getNext().equalsIgnoreCase("Stirling") ? Status.WAITING_TO_LAND : Status.IN_TRANSIT);
+		}
+		this.flightCode = fd.getFlightCode();
+		this.itinerary = fd.getItinerary();
+		this.passengerList = fd.getList();
 	}
-	
+
+	/**
+	 * Clears the instance variables for re-assignment and sets status to free, providing the record was IN_TRANSIT or DEPARTING_THROUGH_LOCAL_AIRSPACE.
+	 */
 	public void radarLostcontact() {
-		//TODO Complete Method
+		if (this.status == Status.IN_TRANSIT.ordinal() || this.status == Status.DEPARTING_THROUGH_LOCAL_AIRSPACE.ordinal()) {	
+			//Clears the contents of this MR and sets the status to FREE
+			this.itinerary = null;
+			this.passengerList = null;
+			this.faultDescription = "";
+			this.gateNumber = -1;
+			this.status = Status.FREE.ordinal();
+		}
 	}
-	
+
+	/**
+	 * Sets the record's status to TAXIING & allocates the flight's gate number equal to the passed parameter.
+	 * @param gateNumber
+	 */
 	public void taxiTo(int gateNumber) {
-		//TODO Complete Method
+		setStatus(Status.TAXIING);
+		this.gateNumber = gateNumber;
 	}
-	
 
 	/**
 	 * If the status is READY_CLEAN_AND_MAINT or CLEAN_AWAIT_MAINT, sets faultDescription equal to description.
@@ -88,7 +98,7 @@ public class ManagementRecord {
 			this.faultDescription = description;
 		}
 	}
-	
+
 	/**
 	 * Appends a passenger onto the PassengerList if status is READY_PASSENGERS
 	 * @param details
@@ -98,6 +108,27 @@ public class ManagementRecord {
 			this.passengerList.addPassenger(details);
 		}
 	}
+	
+	/**
+	 * Clears the current MR's assigned gate, assigning it as -1.
+	 */
+	public void clearGate() {
+		this.gateNumber = -1;
+	}
+
+	/**
+	 * 
+	 * @return Instance variable integer 'gateNumber' used to identify current allocated gate
+	 */
+	public int getGate() {
+		return this.gateNumber;
+	}
+	
+	/*
+	 * GETTERS & SETTERS
+	 */
+	
+	//GETTERS
 	
 	/**
 	 * Returns current instance's passenger list
@@ -114,4 +145,38 @@ public class ManagementRecord {
 	public Itinerary getItinerary() {
 		return this.itinerary;
 	}
-}
+	
+	/**
+	 * Returns the instance variable String 'flightCode'
+	 * @return
+	 */
+	public String getFlightCode() {
+		return flightCode;
+	}
+
+	/**
+	 * @return the integer representation of the Record's status.
+	 */
+	public int getStatus() {
+		return this.status;
+	}
+	
+	//SETTERS
+	
+	/**
+	 * Sets the instance variable 'status' equal to the passed integer
+	 * @param newStatus : The new status to be set to.
+	 */
+	public void setStatus (int newStatus) {
+		this.status = newStatus;
+	}
+
+	/**
+	 * Sets the instance variable 'status' equal to the passed Status' ordial.
+	 * @param newStatus : The new status enum to be set to.
+	 */
+	public void setStatus (Status newStatus) {
+		this.status = newStatus.ordinal();
+	}
+}//EO Class
+

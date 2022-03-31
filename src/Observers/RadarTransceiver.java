@@ -23,13 +23,21 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+
+/**
+ * @stereotype boundary/view/controller
+ * @author 
+ *
+ */
 public class RadarTransceiver extends JFrame
         implements ActionListener, Observer {
+
 
     private String selectedPlane = "";
     private int selectedPlaneIndex;
     private int mCode = -1;
     private int MAX_PASSENGERS;
+
 
     private AircraftManagementDatabase model;
     private String title;
