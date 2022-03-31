@@ -277,6 +277,20 @@ public class AircraftManagementDatabase extends Observable{
 		return mCodesList.isEmpty() ? null : mCodesList;
 	}
 	
+	/**
+	 * 
+	 * @return A String Vector of all ManagementRecord Flight Codes whos status is not "FREE"
+	 */
+	public Vector<String> getDetectedMRs(){
+		Vector<String> detectedMRs = new Vector<String>();
+		for (int i =0; i < MRs.length; i++) {
+			if(MRs[i].getStatus() != Status.FREE.ordinal()){
+				detectedMRs.add(MRs[i].getFlightCode());
+			}
+		}
+		return detectedMRs;
+	}
+	
 	//SETTERS
 	
 	/**

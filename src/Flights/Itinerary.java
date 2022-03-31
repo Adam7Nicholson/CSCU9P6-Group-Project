@@ -25,6 +25,15 @@ public class Itinerary {
 		this.next = next;
 	}
 
+	/**
+	 * Clears current itinerary instance variables
+	 */
+	public void clearItenerary() {
+		this.to = "";
+		this.from = "";
+		this.next = "";
+	}
+	
 	/*
 	 * GETTERS & SETTERS
 	 */
