@@ -70,13 +70,11 @@ public class ManagementRecord {
 	 * Clears the instance variables for re-assignment and sets status to free, providing the record was IN_TRANSIT or DEPARTING_THROUGH_LOCAL_AIRSPACE.
 	 */
 	public void radarLostcontact() {
-		if (this.status == Status.IN_TRANSIT.ordinal() || this.status == Status.DEPARTING_THROUGH_LOCAL_AIRSPACE.ordinal()) {	
-			//Clears the contents of this MR and sets the status to FREE
-			this.itinerary = null;
-			this.passengerList = null;
-			this.faultDescription = "";
-			this.gateNumber = -1;
-			this.status = Status.FREE.ordinal();
+		if (getStatus() == Status.DEPARTING_THROUGH_LOCAL_AIRSPACE.ordinal() || getStatus() == Status.IN_TRANSIT.ordinal()) {
+			setStatus(Status.FREE.ordinal());
+			this.flightCode = "";
+			this.itinerary.clearItenerary();
+			this.passengerList.clearPassengerList();
 		}
 	}
 
