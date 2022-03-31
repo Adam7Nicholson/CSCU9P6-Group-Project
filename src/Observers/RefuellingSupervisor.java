@@ -32,9 +32,6 @@ public class RefuellingSupervisor extends JFrame
  * @stereotype boundary/view/controller
  *
  */
-public class RefuellingSupervisor extends JFrame implements ActionListener {
-
-
     private AircraftManagementDatabase model;
     private String title;
 
