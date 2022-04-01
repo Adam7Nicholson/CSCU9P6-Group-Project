@@ -6,14 +6,13 @@ Please only add your name on this class if you have worked on this class.
 Work can take any form from refactoring to code writing and anything in between, of course
 You should always take credit for your work.*/
 /**
-* @author 2819600
+* @author 2839798
 * @author 
 * @author 
 * @author 
 * @author 
 * @author 
 */
-
 public class PassengerList{
 	private PassengerDetails[] details;
 	
