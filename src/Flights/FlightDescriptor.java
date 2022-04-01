@@ -11,7 +11,7 @@ import Passenger.PassengerList;
 * The itinerary, used to track the flight's destination(s) {itinierary}
 * The list of passengers on the flight: Note this is a PassengerList object and not a List object. {list}
 * @stereotype entity
-* @author Martin Petrov
+* @author 2823424
 * @author 2819600 
 */
 public class FlightDescriptor {
