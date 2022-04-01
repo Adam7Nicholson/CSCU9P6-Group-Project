@@ -6,7 +6,7 @@ Please only add your name on this class if you have worked on this class.
 Work can take any form from refactoring to code writing and anything in between, of course
 You should always take credit for your work.*/
 /**
-* @author 2819600
+* @author 2839798
 * @author 
 * @author 
 * @author 
@@ -25,33 +25,27 @@ public class Itinerary {
 	 * @param to
 	 * @param next
 	 */
-	public Itinerary(String from, String to, String next) {
-		//TODO Create Itinerary Constructor
-		
-	}
+	public Itinerary(String from, String to, String next){
+      this.from = from;
+      this.to = to;
+      this.next = next;
+  }
 
-	/**
-	 * Returns the destination the flight will depart from
-	 * @return String Instance Variable 'from'
-	 */
-	public String getFrom() {
-		return from;
-	}
+  
+  public String getFrom(){
+     return from;
+  }
 
-	/**
-	 * Returns the current destination the flight will travel to
-	 * @return String Instance Variable 'to'
-	 */
-	public String getTo() {
-		return to;
-	}
+  
+  public String getTo(){
+        return to;
+  }
 
-	/**
-	 * Returns the destination the flight will travel to after 'to'
-	 * @return String Instance Variable 'next'
-	 */
-	public String getNext() {
-		return next;
-	}
+  
+  public String getNext(){
+      return next;
+   }
 
+  
+ 
 }
