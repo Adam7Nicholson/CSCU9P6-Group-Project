@@ -227,6 +227,9 @@ public class GOC extends JFrame implements ActionListener,Observer {
                 model.taxiTo(selectedPlaneIndex, selectedGateIndex);
                 gateData.allocate(selectedGateIndex, selectedPlaneIndex);
             }
+            else {
+            	JOptionPane.showMessageDialog(null, "Make sure the gate selected is FREE!");
+            }
         }
 
         //Pressing the Grant Taxi Runaway Clearance - Changes the status of the MR to AWAITING_TAKEOFF and the status of the Gate to Free.
