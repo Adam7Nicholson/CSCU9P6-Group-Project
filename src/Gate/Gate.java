@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 
 public class Gate{
 
-	enum Status {
+	public static enum Status {
 		FREE,
 		RESERVED,
 		OCCUPIED

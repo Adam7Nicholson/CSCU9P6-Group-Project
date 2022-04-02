@@ -10,6 +10,7 @@ package Observers;
 import Flights.FlightDescriptor;
 import Flights.Itinerary;
 import Management.AircraftManagementDatabase;
+import Management.ManagementRecord;
 import Passenger.PassengerDetails;
 import Passenger.PassengerList;
 
@@ -180,7 +181,7 @@ public class RadarTransceiver extends JFrame
                             refreshList(boardedPassengersModel, boardedPassengersVector);
 
                             //enabling the leave Airspace button only for MRs with status IN_TRANSIT or DEPARTING_THROUGH_LOCAL_AIRSPACE
-                        } if(model.getStatus(mCode) == 1 || model.getStatus(mCode) == 18){
+                        } if(model.getStatus(mCode) == ManagementRecord.Status.IN_TRANSIT.ordinal() || model.getStatus(mCode) == ManagementRecord.Status.DEPARTING_THROUGH_LOCAL_AIRSPACE.ordinal()){
                             leaveAirspace.setEnabled(true);
                         } else {
                             leaveAirspace.setEnabled(false);
