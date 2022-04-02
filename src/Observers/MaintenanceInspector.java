@@ -8,6 +8,7 @@ package Observers;
  * @author
  */
 import Management.AircraftManagementDatabase;
+import Management.ManagementRecord;
 
 import javax.swing.*;
 import java.awt.*;
@@ -100,28 +101,28 @@ public class MaintenanceInspector extends JFrame
                         currentLocation.setText(gate);
 
                         //Enable the correct buttons depending on the currently selected MR's status
-                        if(model.getStatus(mCode) == 11 || model.getStatus(mCode) == 9){
+                        if(model.getStatus(mCode) == ManagementRecord.Status.OK_AWAIT_CLEAN.ordinal() || model.getStatus(mCode) == ManagementRecord.Status.FAULTY_AWAIT_CLEAN.ordinal()){
                                 reportFaults.setEnabled(false);
                                 complete.setEnabled(false);
                                 ready.setEnabled(false);
-                        } else if (model.getStatus(mCode) == 8){
+                        } else if (model.getStatus(mCode) == ManagementRecord.Status.READY_CLEAN_AND_MAINT.ordinal()){
                             reportFaults.setEnabled(true);
                             complete.setEnabled(false);
                             ready.setEnabled(true);
-                        } else if (model.getStatus(mCode) == 12){
+                        } else if (model.getStatus(mCode) == ManagementRecord.Status.AWAIT_REPAIR.ordinal()){
                             reportFaults.setEnabled(false);
                             complete.setEnabled(true);
                             ready.setEnabled(false);
-                        } else if (model.getStatus(mCode) == 9 || model.getStatus(mCode) == 12){
+                        } else if (model.getStatus(mCode) == ManagementRecord.Status.FAULTY_AWAIT_CLEAN.ordinal() || model.getStatus(mCode) == ManagementRecord.Status.AWAIT_REPAIR.ordinal()){
                             commentsArea.setText(model.getFaults(mCode));
-                        } else if (model.getStatus(mCode) == 10) {
+                        } else if (model.getStatus(mCode) == ManagementRecord.Status.CLEAN_AWAIT_MAINT.ordinal()) {
                             reportFaults.setEnabled(true);
                             complete.setEnabled(false);
                             ready.setEnabled(true);
                         }
 
                         //Enabling or disabling the commentsArea depending on the current MR's status
-                        if(model.getStatus(mCode) == 8 || model.getStatus(mCode) == 10){
+                        if(model.getStatus(mCode) == ManagementRecord.Status.READY_CLEAN_AND_MAINT.ordinal() || model.getStatus(mCode) == ManagementRecord.Status.CLEAN_AWAIT_MAINT.ordinal()){
                             commentsArea.setText("");
                             commentsArea.setEditable(true);
                         } else{
@@ -184,13 +185,13 @@ public class MaintenanceInspector extends JFrame
 
         // Ready button is clicked - Depending on the current status, changes the status of the selected MR to either OK_AWAIT_CLEAN or READY_REFUEL
         if(e.getSource() == ready){
-            if(model.getStatus(selectedPlaneIndex) == 8){
-                model.setStatus(selectedPlaneIndex, 11);
+            if(model.getStatus(selectedPlaneIndex) ==  ManagementRecord.Status.READY_CLEAN_AND_MAINT.ordinal()){
+                model.setStatus(selectedPlaneIndex, ManagementRecord.Status.OK_AWAIT_CLEAN.ordinal());
                 reportFaults.setEnabled(false);
                 complete.setEnabled(false);
                 ready.setEnabled(false);
-            } else if (model.getStatus(selectedPlaneIndex) == 10){
-                model.setStatus(selectedPlaneIndex, 13);
+            } else if (model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.CLEAN_AWAIT_MAINT.ordinal()){
+                model.setStatus(selectedPlaneIndex, ManagementRecord.Status.READY_REFUEL.ordinal());
             }
 
         }
@@ -201,10 +202,10 @@ public class MaintenanceInspector extends JFrame
                 commentsArea.setText("Enter the faults here");
             } else {
                 model.faultsFound(mCode, commentsArea.getText());
-                if(model.getStatus(selectedPlaneIndex) == 8){
-                    model.setStatus(selectedPlaneIndex, 9);
-                } else if (model.getStatus(selectedPlaneIndex) == 10){
-                    model.setStatus(selectedPlaneIndex, 12);
+                if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.READY_CLEAN_AND_MAINT.ordinal()){
+                    model.setStatus(selectedPlaneIndex, ManagementRecord.Status.FAULTY_AWAIT_CLEAN.ordinal());
+                } else if (model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.CLEAN_AWAIT_MAINT.ordinal()){
+                    model.setStatus(selectedPlaneIndex, ManagementRecord.Status.AWAIT_REPAIR.ordinal());
                 }
             }
 
@@ -219,7 +220,7 @@ public class MaintenanceInspector extends JFrame
         if(e.getSource() == complete){
             if(model.getFaults(mCode) != ""){
                 model.faultsFound(mCode,"");
-                model.setStatus(selectedPlaneIndex, 8);
+                model.setStatus(selectedPlaneIndex, ManagementRecord.Status.READY_CLEAN_AND_MAINT.ordinal());
             }
         }
     }

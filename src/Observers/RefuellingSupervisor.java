@@ -8,6 +8,7 @@ package Observers;
  * @author
  */
 import Management.AircraftManagementDatabase;
+import Management.ManagementRecord;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,7 +85,7 @@ public class RefuellingSupervisor extends JFrame
                         mCode = model.getMCode(selectedPlane);
                         selectAPlane.setText(model.getFlightCode(selectedPlaneIndex));
 
-                        if(model.getStatus(selectedPlaneIndex) == 13) planeIsRefuelledBtn.setEnabled(true);
+                        if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.READY_REFUEL.ordinal()) planeIsRefuelledBtn.setEnabled(true);
                     }
                 }
             }
@@ -122,7 +123,7 @@ public class RefuellingSupervisor extends JFrame
     public void actionPerformed(ActionEvent e) {
         // Plane Is Refuelled button is clicked - Changes the status of the selected MR to READY_PASSENGERS
         if(e.getSource()==planeIsRefuelledBtn){
-            if(model.getStatus(selectedPlaneIndex) == 13) model.setStatus(selectedPlaneIndex, 14);
+            if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.READY_REFUEL.ordinal() ) model.setStatus(selectedPlaneIndex, ManagementRecord.Status.READY_PASSENGERS.ordinal());
         }
     }
 
@@ -133,7 +134,7 @@ public class RefuellingSupervisor extends JFrame
      */
     @Override
     public void update(Observable o, Object arg) {
-        int[] planesWithStatus = model.getWithStatus(13);
+        int[] planesWithStatus = model.getWithStatus(ManagementRecord.Status.READY_REFUEL.ordinal());
         Vector<String> planes = new Vector<String>();
         if(planesWithStatus != null) {
             for(int i = 0; i < planesWithStatus.length; i++) {
