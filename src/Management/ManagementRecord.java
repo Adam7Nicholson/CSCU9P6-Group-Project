@@ -51,6 +51,7 @@ public class ManagementRecord {
 	 */
 	public ManagementRecord() {
 		setStatus(Status.FREE.ordinal());
+		this.gateNumber = -1;
 	}
 
 	/**
