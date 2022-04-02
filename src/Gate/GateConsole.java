@@ -234,6 +234,7 @@ public class GateConsole extends JFrame implements ActionListener, Observer{
                         passengerName.setText("");
                         frtd.setEnabled(true);
                     }
+                    else JOptionPane.showMessageDialog(null, "Enter passenger's details!");
                 }
             }
             else {
@@ -247,6 +248,7 @@ public class GateConsole extends JFrame implements ActionListener, Observer{
                 model.setStatus(gateDatabase.getMCode(gateNumber), 15);
                 addPassenger.setEnabled(false);
                 frtd.setEnabled(false);
+                passengerName.setEditable(false);
             }
         }
 
