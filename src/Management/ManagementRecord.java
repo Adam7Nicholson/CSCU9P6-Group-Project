@@ -17,26 +17,26 @@ public class ManagementRecord {
 	 * @author Adam
 	 *
 	 */
-	enum Status{
-		FREE,
-		IN_TRANSIT,
-		WAITING_TO_LAND,
-		GROUND_CLEARANCE_GRANTED,
-		LANDING,
-		LANDED,
-		TAXIING,
-		UNLOADING,
-		READY_CLEAN_AND_MAINT,
-		FAULTY_AWAIT_CLEAN,
-		CLEAN_AWAIT_MAINT,
-		OK_AWAIT_CLEAN,
-		AWAIT_REPAIR,
-		READY_REFUEL,
-		READY_PASSENGERS,
-		READY_DEPART,
-		AWAITING_TAXI,
-		AWAITING_TAKEOFF,
-		DEPARTING_THROUGH_LOCAL_AIRSPACE
+	public static enum Status{
+		FREE, //0
+		IN_TRANSIT, //1
+		WAITING_TO_LAND,//2
+		GROUND_CLEARANCE_GRANTED,//3
+		LANDING,//4
+		LANDED,//5
+		TAXIING,//6
+		UNLOADING,//7
+		READY_CLEAN_AND_MAINT,//8
+		FAULTY_AWAIT_CLEAN,//9
+		CLEAN_AWAIT_MAINT,//10
+		OK_AWAIT_CLEAN,//11
+		AWAIT_REPAIR,//12
+		READY_REFUEL,//13
+		READY_PASSENGERS,//14
+		READY_DEPART,//15
+		AWAITING_TAXI,//16
+		AWAITING_TAKEOFF,//17
+		DEPARTING_THROUGH_LOCAL_AIRSPACE//18
 	}
 
 	private int status;
@@ -51,6 +51,7 @@ public class ManagementRecord {
 	 */
 	public ManagementRecord() {
 		setStatus(Status.FREE.ordinal());
+		this.gateNumber = -1;
 	}
 
 	/**

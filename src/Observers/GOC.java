@@ -14,6 +14,7 @@ You should always take credit for your work.*/
  */
 
 import Management.AircraftManagementDatabase;
+import Management.ManagementRecord;
 import Passenger.PassengerList;
 
 import javax.swing.*;
@@ -113,9 +114,9 @@ public class GOC extends JFrame implements ActionListener,Observer {
                                                             "Next: " + model.getItinirary(mCode).getNext();
                                                     planeDetailsArea.setText(selectedPlanesDetails);
                                                     
-                                                   if(model.getStatus(mCode) == 2)grantGroundClearance.setEnabled(true);
-                                                   if(model.getStatus(mCode) == 5)taxiToGate.setEnabled(true);
-                                                   if(model.getStatus(mCode) == 16)grantTaxiRunwayClearance.setEnabled(true);
+                                                   if(model.getStatus(mCode) == ManagementRecord.Status.WAITING_TO_LAND.ordinal())grantGroundClearance.setEnabled(true);
+                                                   if(model.getStatus(mCode) == ManagementRecord.Status.LANDED.ordinal())taxiToGate.setEnabled(true);
+                                                   if(model.getStatus(mCode) == ManagementRecord.Status.AWAITING_TAXI.ordinal())grantTaxiRunwayClearance.setEnabled(true);
                                                 }
                                             }
                                         }
@@ -217,26 +218,29 @@ public class GOC extends JFrame implements ActionListener,Observer {
     	
     	//Pressing the Grant Ground Clearance button - Changes the status of the MR to GROUND_CLEARANCE_GRANTED.
         if(e.getSource()== grantGroundClearance){
-            if(model.getStatus(selectedPlaneIndex) == 2)model.setStatus(selectedPlaneIndex, 3);
+            if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.WAITING_TO_LAND.ordinal())model.setStatus(selectedPlaneIndex, ManagementRecord.Status.GROUND_CLEARANCE_GRANTED.ordinal());
         }
         
         //Pressing Taxi to Gate - Changes the status of the MR to TAXIING and the status of the Gate to RESERVED,
         //Makes a connection between the MR and the Gate.
         if(e.getSource() == taxiToGate) {
-            if(model.getStatus(selectedPlaneIndex) == 5 && gateData.getStatus(selectedGateIndex) == 0) {
+            if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.LANDED.ordinal() && gateData.getStatus(selectedGateIndex) == Gate.Gate.Status.FREE.ordinal()) {
                 model.taxiTo(selectedPlaneIndex, selectedGateIndex);
                 gateData.allocate(selectedGateIndex, selectedPlaneIndex);
+            }
+            else {
+            	JOptionPane.showMessageDialog(null, "Make sure the gate selected is FREE!");
             }
         }
 
         //Pressing the Grant Taxi Runaway Clearance - Changes the status of the MR to AWAITING_TAKEOFF and the status of the Gate to Free.
         //Removes the connection between the Gate and the MR. 
         if(e.getSource() == grantTaxiRunwayClearance) {
-            if(model.getStatus(selectedPlaneIndex) == 16){
+            if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.AWAITING_TAXI.ordinal()){
                 gateData.departed(model.getGate(selectedPlaneIndex));
                 
                 model.clearGate(selectedPlaneIndex);
-                model.setStatus(selectedPlaneIndex, 17);
+                model.setStatus(selectedPlaneIndex, ManagementRecord.Status.AWAITING_TAKEOFF.ordinal());
             }
         }
     }
@@ -248,7 +252,7 @@ public class GOC extends JFrame implements ActionListener,Observer {
 
     //Checks if the MR has been allocated a Gate yet.
         if(model.getGate(mCode) == -1)gate = "N/A";
-        else gate = "Gate " + (model.getGate(selectedPlaneIndex) + 1);
+        else gate = "Gate " + (model.getGate(selectedPlaneIndex) + 1);//Printing purpose
         
       //Checks if the source of the update is from the AircraftManagementRecord class
         if(o.equals(model)) {
@@ -263,7 +267,7 @@ public class GOC extends JFrame implements ActionListener,Observer {
                         "Next: " + model.getItinirary(mCode).getNext();
                 planeDetailsArea.setText(selectedPlanesDetails);
             }
-            if (model.getStatus(selectedPlaneIndex) == 0){
+            if (model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.FREE.ordinal()){
                 planeDetailsArea.setText("");
             }
             refreshList(planesListModel,MRs);
@@ -275,8 +279,8 @@ public class GOC extends JFrame implements ActionListener,Observer {
             int[] statuses = gateData.getStatuses();
             for(int i = 0; i < statuses.length; i++)
             {
-                if(statuses[i] == 0)gatesListed.add("Gate " + (i+1) + " - " + "Free");
-                else if(statuses[i] == 1)gatesListed.add("Gate " + (i+1) + " - " + "Reserved");
+                if(statuses[i] == Gate.Gate.Status.FREE.ordinal())gatesListed.add("Gate " + (i+1) + " - " + "Free");
+                else if(statuses[i] == Gate.Gate.Status.RESERVED.ordinal())gatesListed.add("Gate " + (i+1) + " - " + "Reserved");
                 else gatesListed.add("Gate " + (i+1) + " - " + "Occupied");
             }
             refreshList(gateListModel, gatesListed);

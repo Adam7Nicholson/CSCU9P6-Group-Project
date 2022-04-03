@@ -20,6 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import Management.AircraftManagementDatabase;
+import Management.ManagementRecord;
+import Management.ManagementRecord.Status;
 import Passenger.PassengerDetails;
 
 /*Please put your student ID in so proper accreditation can be given for your work.
@@ -205,8 +207,8 @@ public class GateConsole extends JFrame implements ActionListener, Observer{
 
         //Pressing the Plane Docked button - Gate becomes OCCUUPIED, MR becomes UNLOADING.
         if(e.getSource() == planeDocked) {
-            if(model.getStatus(gateDatabase.getMCode(gateNumber)) == 6 && gateDatabase.getStatus(gateNumber) == 1) {
-                model.setStatus(gateDatabase.getMCode(gateNumber), 7);
+            if(model.getStatus(gateDatabase.getMCode(gateNumber)) == ManagementRecord.Status.TAXIING.ordinal() && gateDatabase.getStatus(gateNumber) == Gate.Status.RESERVED.ordinal()) {
+                model.setStatus(gateDatabase.getMCode(gateNumber), ManagementRecord.Status.UNLOADING.ordinal());
                 gateDatabase.docked(gateNumber);
                 
                 planeUnloaded.setEnabled(true);
@@ -215,8 +217,8 @@ public class GateConsole extends JFrame implements ActionListener, Observer{
         }
         //Pressing the Plane Unloaded button - Passenger list cleared, MR becomes UNLOADED.
         if(e.getSource() == planeUnloaded) {
-            if(model.getStatus(gateDatabase.getMCode(gateNumber)) == 7 && gateDatabase.getStatus(gateNumber) == 2) {
-                model.setStatus(gateDatabase.getMCode(gateNumber), 8);
+            if(model.getStatus(gateDatabase.getMCode(gateNumber)) == ManagementRecord.Status.UNLOADING.ordinal() && gateDatabase.getStatus(gateNumber) == Gate.Status.OCCUPIED.ordinal()) {
+                model.setStatus(gateDatabase.getMCode(gateNumber), ManagementRecord.Status.READY_CLEAN_AND_MAINT.ordinal());
                 model.clearPassengerList(gateDatabase.getMCode(gateNumber));
                 planeUnloaded.setEnabled(false);
             }
@@ -227,13 +229,14 @@ public class GateConsole extends JFrame implements ActionListener, Observer{
             int maxPassengers = model.getMaxPassengers();
             if(model.getPassengerList(gateDatabase.getMCode(gateNumber)).size() < maxPassengers)
             {
-                if(model.getStatus(gateDatabase.getMCode(gateNumber)) == 14 && gateDatabase.getStatus(gateNumber) == 2) {
+                if(model.getStatus(gateDatabase.getMCode(gateNumber)) == ManagementRecord.Status.READY_PASSENGERS.ordinal() && gateDatabase.getStatus(gateNumber) == Gate.Status.OCCUPIED.ordinal()) {
                     if(!passengerName.getText().isEmpty()) {
                         PassengerDetails details = new PassengerDetails(passengerName.getText());
                         model.addPassenger(gateDatabase.getMCode(gateNumber), details);
                         passengerName.setText("");
                         frtd.setEnabled(true);
                     }
+                    else JOptionPane.showMessageDialog(null, "Enter passenger's details!");
                 }
             }
             else {
@@ -243,10 +246,11 @@ public class GateConsole extends JFrame implements ActionListener, Observer{
         }
 
         if(e.getSource() == frtd) {
-            if(model.getStatus(gateDatabase.getMCode(gateNumber)) == 14){
-                model.setStatus(gateDatabase.getMCode(gateNumber), 15);
+            if(model.getStatus(gateDatabase.getMCode(gateNumber)) == ManagementRecord.Status.READY_PASSENGERS.ordinal()){
+                model.setStatus(gateDatabase.getMCode(gateNumber), ManagementRecord.Status.READY_DEPART.ordinal());
                 addPassenger.setEnabled(false);
                 frtd.setEnabled(false);
+                passengerName.setEditable(false);
             }
         }
 
@@ -255,9 +259,9 @@ public class GateConsole extends JFrame implements ActionListener, Observer{
     @Override
     public void update(Observable o, Object arg) {
 
-    	if(gateDatabase.getStatus(gateNumber) == 1) planeDocked.setEnabled(true);
+    	if(gateDatabase.getStatus(gateNumber) == Gate.Status.RESERVED.ordinal()) planeDocked.setEnabled(true);
     	
-    	if(model.getStatus(gateDatabase.getMCode(gateNumber)) == 14) {
+    	if(model.getStatus(gateDatabase.getMCode(gateNumber)) == ManagementRecord.Status.READY_PASSENGERS.ordinal()) {
     		passengerName.setEditable(true);
     		addPassenger.setEnabled(true);
     	}

@@ -9,6 +9,7 @@ package Observers;
  * @author
  */
 import Management.AircraftManagementDatabase;
+import Management.ManagementRecord;
 
 import javax.swing.*;
 import java.awt.*;
@@ -114,10 +115,10 @@ public class LATC extends JFrame
                         planeDetailsArea.setText(selectedPlanesDetails);
 
                         //Enabling buttons depending on the selected MR's status
-                        if(model.getStatus(mCode) == 3) allowApproachClearance.setEnabled(true);
-                        if(model.getStatus(mCode) == 4) confirmPlaneHasLanded.setEnabled(true);
-                        if(model.getStatus(mCode) == 15) allocateDepartureSlot.setEnabled(true);
-                        if(model.getStatus(mCode) == 17) permitTakeoff.setEnabled(true);
+                        if(model.getStatus(mCode) == ManagementRecord.Status.GROUND_CLEARANCE_GRANTED.ordinal()) allowApproachClearance.setEnabled(true);
+                        if(model.getStatus(mCode) == ManagementRecord.Status.LANDING.ordinal()) confirmPlaneHasLanded.setEnabled(true);
+                        if(model.getStatus(mCode) == ManagementRecord.Status.READY_DEPART.ordinal()) allocateDepartureSlot.setEnabled(true);
+                        if(model.getStatus(mCode) == ManagementRecord.Status.AWAITING_TAKEOFF.ordinal()) permitTakeoff.setEnabled(true);
 
                     }
                 }
@@ -193,26 +194,26 @@ public class LATC extends JFrame
 
         // Allow Approach Clearance button is clicked - Changes the status of the selected MR to LANDING
         if(e.getSource() == allowApproachClearance) {
-            if(model.getStatus(selectedPlaneIndex) == 3){
-                model.setStatus(selectedPlaneIndex, 4);
+            if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.GROUND_CLEARANCE_GRANTED.ordinal()){
+                model.setStatus(selectedPlaneIndex, ManagementRecord.Status.LANDING.ordinal());
             }
         }
 
         // Confirm Plane Has Landed button is clicked - Changes the status of the selected MR to LANDED
         if(e.getSource() == confirmPlaneHasLanded) {
-            if(model.getStatus(selectedPlaneIndex) == 4)model.setStatus(selectedPlaneIndex, 5);
+            if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.LANDING.ordinal())model.setStatus(selectedPlaneIndex, ManagementRecord.Status.LANDED.ordinal());
 
         }
 
         // Allocate Departure Slot button is clicked - Changes the status of the selected MR to AWAITING_TAXI
         if(e.getSource() == allocateDepartureSlot) {
-            if(model.getStatus(selectedPlaneIndex) == 15)model.setStatus(selectedPlaneIndex, 16);
+            if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.READY_DEPART.ordinal())model.setStatus(selectedPlaneIndex, ManagementRecord.Status.AWAITING_TAXI.ordinal());
 
         }
 
         // Permit Takeoff button is clicked - Changes the status of the selected MR to DEPARTING_THROUGH_LOCAL_AIRSPACE
         if(e.getSource() == permitTakeoff) {
-            if(model.getStatus(selectedPlaneIndex) == 17)model.setStatus(selectedPlaneIndex, 18);
+            if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.AWAITING_TAKEOFF.ordinal())model.setStatus(selectedPlaneIndex, ManagementRecord.Status.DEPARTING_THROUGH_LOCAL_AIRSPACE.ordinal());
 
         }
     }

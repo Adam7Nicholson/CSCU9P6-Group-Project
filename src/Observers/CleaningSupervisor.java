@@ -28,6 +28,9 @@ You should always take credit for your work.*/
  */
 
 import Management.AircraftManagementDatabase;
+import Management.ManagementRecord;
+import Management.ManagementRecord.Status;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -117,7 +120,7 @@ public class CleaningSupervisor extends JFrame implements ActionListener, Observ
                         selectAPlane.setText(model.getStringStatus(mCode));
 
                         //enabling the button if the selected MR's status allow the button to be clicked
-                        if(model.getStatus(mCode) == 8 || model.getStatus(mCode) == 9 || model.getStatus(mCode) == 11){
+                        if(model.getStatus(mCode) == ManagementRecord.Status.READY_CLEAN_AND_MAINT.ordinal() || model.getStatus(mCode) == Status.FAULTY_AWAIT_CLEAN.ordinal() || model.getStatus(mCode) == Status.OK_AWAIT_CLEAN.ordinal()){
                             cleanAirplane.setEnabled(true);
                         } else{
                             cleanAirplane.setEnabled(false);
@@ -152,12 +155,12 @@ public class CleaningSupervisor extends JFrame implements ActionListener, Observ
 
         // Clean Airplane button is clicked - Depending on the current status of the selected MR, changes it to either CLEAN_AWAIT_MAINT, AWAIT_REPAIR or READY_REFUEL
         if (e.getSource() == cleanAirplane) {
-            if (model.getStatus(selectedPlaneIndex) == 11) {
-                model.setStatus(selectedPlaneIndex, 13);
-            } else if (model.getStatus(selectedPlaneIndex) == 9) {
-                model.setStatus(selectedPlaneIndex, 12);
-            } else if (model.getStatus(selectedPlaneIndex) == 8) {
-                model.setStatus(selectedPlaneIndex, 10);
+            if (model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.OK_AWAIT_CLEAN.ordinal()) {
+                model.setStatus(selectedPlaneIndex, ManagementRecord.Status.READY_REFUEL.ordinal());
+            } else if (model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.FAULTY_AWAIT_CLEAN.ordinal()) {
+                model.setStatus(selectedPlaneIndex, ManagementRecord.Status.AWAIT_REPAIR.ordinal());
+            } else if (model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.READY_CLEAN_AND_MAINT.ordinal()) {
+                model.setStatus(selectedPlaneIndex, ManagementRecord.Status.CLEAN_AWAIT_MAINT.ordinal());
             }
         }
     }
