@@ -198,7 +198,7 @@ public class MaintenanceInspector extends JFrame
 
         // Report Faults button is clicked - Depending on the current status, changes the status of the selected MR to either FAULTY_AWAIT_CLEAN or AWAIT_REPAIR
         if(e.getSource() == reportFaults){
-            if(commentsArea.getText().isEmpty()){
+            if(commentsArea.getText().isEmpty() || commentsArea.getText().equalsIgnoreCase("Enter the faults here")){
                 commentsArea.setText("Enter the faults here");
             } else {
                 model.faultsFound(mCode, commentsArea.getText());
