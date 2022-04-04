@@ -115,10 +115,36 @@ public class LATC extends JFrame
                         planeDetailsArea.setText(selectedPlanesDetails);
 
                         //Enabling buttons depending on the selected MR's status
-                        if(model.getStatus(mCode) == ManagementRecord.Status.GROUND_CLEARANCE_GRANTED.ordinal()) allowApproachClearance.setEnabled(true);
-                        if(model.getStatus(mCode) == ManagementRecord.Status.LANDING.ordinal()) confirmPlaneHasLanded.setEnabled(true);
-                        if(model.getStatus(mCode) == ManagementRecord.Status.READY_DEPART.ordinal()) allocateDepartureSlot.setEnabled(true);
-                        if(model.getStatus(mCode) == ManagementRecord.Status.AWAITING_TAKEOFF.ordinal()) permitTakeoff.setEnabled(true);
+                        if(model.getStatus(mCode) == ManagementRecord.Status.GROUND_CLEARANCE_GRANTED.ordinal()) {
+                        	allowApproachClearance.setEnabled(true);
+                        	confirmPlaneHasLanded.setEnabled(false);
+                            allocateDepartureSlot.setEnabled(false);
+                            permitTakeoff.setEnabled(false);
+                        }
+                        else if(model.getStatus(mCode) == ManagementRecord.Status.LANDING.ordinal()) {
+                        	allowApproachClearance.setEnabled(false);
+                        	confirmPlaneHasLanded.setEnabled(true);
+                        	allocateDepartureSlot.setEnabled(false);
+                        	permitTakeoff.setEnabled(false);
+                        }
+                        else if(model.getStatus(mCode) == ManagementRecord.Status.READY_DEPART.ordinal()) {
+                        	allowApproachClearance.setEnabled(false);
+                            confirmPlaneHasLanded.setEnabled(false);
+                        	allocateDepartureSlot.setEnabled(true);
+                        	permitTakeoff.setEnabled(false);
+                        }
+                        else if(model.getStatus(mCode) == ManagementRecord.Status.AWAITING_TAKEOFF.ordinal()) {
+                        	allowApproachClearance.setEnabled(false);
+                            confirmPlaneHasLanded.setEnabled(false);
+                            allocateDepartureSlot.setEnabled(false);
+                        	permitTakeoff.setEnabled(true);
+                        }
+                        else {
+                            allowApproachClearance.setEnabled(false);
+                            confirmPlaneHasLanded.setEnabled(false);
+                            allocateDepartureSlot.setEnabled(false);
+                            permitTakeoff.setEnabled(false);
+                        }
 
                     }
                 }
