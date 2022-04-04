@@ -127,7 +127,7 @@ public class MaintenanceInspector extends JFrame
                             commentsArea.setEditable(true);
                         } else{
                             commentsArea.setEditable(false);
-                            commentsArea.setText(model.getFaults(mCode));
+                            commentsArea.setText(model.getFaults(selectedPlaneIndex));
                         }
 
                     }
@@ -194,6 +194,7 @@ public class MaintenanceInspector extends JFrame
             } else if (model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.CLEAN_AWAIT_MAINT.ordinal()){
                 model.setStatus(selectedPlaneIndex, ManagementRecord.Status.READY_REFUEL.ordinal());
             }
+            model.faultsFound(selectedPlaneIndex, "");
 
         }
 
@@ -212,7 +213,6 @@ public class MaintenanceInspector extends JFrame
 
             if(commentsArea.getText().equalsIgnoreCase(""))
             {
-                System.out.println("test Report faults");
                 reportFaults.setEnabled(false);
             }
         }
