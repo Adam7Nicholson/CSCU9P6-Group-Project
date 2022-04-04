@@ -93,7 +93,7 @@ public class ManagementRecord {
 	 * @param description
 	 */
 	public void faultsFound(String description) {
-		if (this.status == Status.READY_CLEAN_AND_MAINT.ordinal() || this.status == Status.CLEAN_AWAIT_MAINT.ordinal()) {
+		if (this.status == Status.READY_CLEAN_AND_MAINT.ordinal() || this.status == Status.CLEAN_AWAIT_MAINT.ordinal() || this.status == Status.AWAIT_REPAIR.ordinal()) {
 			this.faultDescription = description;
 		}
 	}
