@@ -262,7 +262,7 @@ public class RadarTransceiver extends JFrame
                 passengerNameTextField.setText("Please provide flight details");
                 //input validation case 2: if flight details are complete but passenger's name is not provided
             } else if (!flightCodeTextField.getText().isEmpty() && !flightToTextField.getText().isEmpty() && !flightFromTextField.getText().isEmpty()
-                    && !nextStopTextField.getText().isEmpty() && passengerNameTextField.getText().isEmpty()){
+                    && !nextStopTextField.getText().isEmpty() && passengerNameTextField.getText().isEmpty() || passengerNameTextField.getText().equalsIgnoreCase("Enter a passenger's name")){
                 passengerNameTextField.setText("Enter a passenger's name");
                 //input validation case 3: if passenger's name and at least 1 of flight fields are empty
             } else if (flightCodeTextField.getText().isEmpty() || flightToTextField.getText().isEmpty() || flightFromTextField.getText().isEmpty()

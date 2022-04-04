@@ -89,11 +89,11 @@ public class ManagementRecord {
 	}
 
 	/**
-	 * If the status is READY_CLEAN_AND_MAINT or CLEAN_AWAIT_MAINT, sets faultDescription equal to description.
+	 * If the status is READY_CLEAN_AND_MAINT, CLEAN_AWAIT_MAINT or AWAIT_REPAIR sets faultDescription equal to description.
 	 * @param description
 	 */
 	public void faultsFound(String description) {
-		if (this.status == Status.READY_CLEAN_AND_MAINT.ordinal() || this.status == Status.CLEAN_AWAIT_MAINT.ordinal()) {
+		if (this.status == Status.READY_CLEAN_AND_MAINT.ordinal() || this.status == Status.CLEAN_AWAIT_MAINT.ordinal() || this.status == Status.AWAIT_REPAIR.ordinal()) {
 			this.faultDescription = description;
 		}
 	}

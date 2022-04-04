@@ -211,7 +211,7 @@ public class AircraftManagementDatabase extends Observable{
 	/**
 	 * Get the MRs from the Radar Transceiver that will go to GOC
 	 * @return A vector of the flightCodes of MRs that have statuses different from FREE and IN TRANSIT
-	 * @author Martin Petrov
+	 * @author 2816391
 	 * @author 2819600 (Minor legibility tweaks)
 	 */
 	public Vector<String> getGocMRs (){
@@ -227,13 +227,16 @@ public class AircraftManagementDatabase extends Observable{
 	/**
 	 * Get the MRs from the Radar Transceiver that will go to LATC
 	 * @return ArrayList of all MRs that have status different from FREE
-	 * @author Martin Petrov
+	 * @author 2823424
 	 * @author 2819600 (Minor legibility tweaks)
 	 */
 	public ArrayList<String> getLatcMRs (){
 		ArrayList<String> occupiedMRs = new ArrayList<String>();
 		for (int i =0; i < MRs.length; i++) {
-			if(MRs[i].getStatus() != Status.FREE.ordinal()){
+			if(MRs[i].getStatus() != Status.FREE.ordinal() && (MRs[i].getStatus() == Status.IN_TRANSIT.ordinal() || MRs[i].getStatus() == Status.WAITING_TO_LAND.ordinal()
+					|| MRs[i].getStatus() == Status.GROUND_CLEARANCE_GRANTED.ordinal() || MRs[i].getStatus() == Status.LANDING.ordinal()
+					|| MRs[i].getStatus() == Status.READY_DEPART.ordinal() || MRs[i].getStatus() == Status.AWAITING_TAXI.ordinal()
+					|| MRs[i].getStatus() == Status.AWAITING_TAKEOFF.ordinal() || MRs[i].getStatus() == Status.DEPARTING_THROUGH_LOCAL_AIRSPACE.ordinal())){
 				occupiedMRs.add(MRs[i].getFlightCode());
 			}//EO If
 		}//EO For

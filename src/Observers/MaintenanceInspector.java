@@ -127,7 +127,7 @@ public class MaintenanceInspector extends JFrame
                             commentsArea.setEditable(true);
                         } else{
                             commentsArea.setEditable(false);
-                            commentsArea.setText(model.getFaults(mCode));
+                            commentsArea.setText(model.getFaults(selectedPlaneIndex));
                         }
 
                     }
@@ -152,6 +152,7 @@ public class MaintenanceInspector extends JFrame
         panel2.setPreferredSize(new Dimension(200,400));
         comment = new JLabel("Comment");
         commentsArea = new JTextArea(8,15);
+        commentsArea.setEditable(false);
         reportFaults = new JButton("Report Faults");
         reportFaults.addActionListener(this);
         reportFaults.setEnabled(false);
@@ -193,12 +194,13 @@ public class MaintenanceInspector extends JFrame
             } else if (model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.CLEAN_AWAIT_MAINT.ordinal()){
                 model.setStatus(selectedPlaneIndex, ManagementRecord.Status.READY_REFUEL.ordinal());
             }
+            model.faultsFound(selectedPlaneIndex, "");
 
         }
 
         // Report Faults button is clicked - Depending on the current status, changes the status of the selected MR to either FAULTY_AWAIT_CLEAN or AWAIT_REPAIR
         if(e.getSource() == reportFaults){
-            if(commentsArea.getText().isEmpty()){
+            if(commentsArea.getText().isEmpty() || commentsArea.getText().equalsIgnoreCase("Enter the faults here")){
                 commentsArea.setText("Enter the faults here");
             } else {
                 model.faultsFound(mCode, commentsArea.getText());
@@ -211,7 +213,6 @@ public class MaintenanceInspector extends JFrame
 
             if(commentsArea.getText().equalsIgnoreCase(""))
             {
-                System.out.println("test Report faults");
                 reportFaults.setEnabled(false);
             }
         }
@@ -248,6 +249,7 @@ public class MaintenanceInspector extends JFrame
         reportFaults.setEnabled(false);
         ready.setEnabled(false);
         complete.setEnabled(false);
+        commentsArea.setText("");
         refreshList(maintenanceModel, maintenanceVector);
     }
 
