@@ -114,9 +114,23 @@ public class GOC extends JFrame implements ActionListener,Observer {
                                                             "Next: " + model.getItinirary(mCode).getNext();
                                                     planeDetailsArea.setText(selectedPlanesDetails);
                                                     
-                                                   if(model.getStatus(mCode) == ManagementRecord.Status.WAITING_TO_LAND.ordinal())grantGroundClearance.setEnabled(true);
-                                                   if(model.getStatus(mCode) == ManagementRecord.Status.LANDED.ordinal())taxiToGate.setEnabled(true);
-                                                   if(model.getStatus(mCode) == ManagementRecord.Status.AWAITING_TAXI.ordinal())grantTaxiRunwayClearance.setEnabled(true);
+                                                   if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.WAITING_TO_LAND.ordinal()){
+                                                	   grantGroundClearance.setEnabled(true);
+                                                	   taxiToGate.setEnabled(false);
+                                                	   grantTaxiRunwayClearance.setEnabled(false);
+                                                   }else if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.LANDED.ordinal()) {
+                                                	   grantGroundClearance.setEnabled(false);
+                                                	   taxiToGate.setEnabled(true);
+                                                	   grantTaxiRunwayClearance.setEnabled(false);
+                                                   }else if(model.getStatus(selectedPlaneIndex) == ManagementRecord.Status.AWAITING_TAXI.ordinal()) {
+                                                	   grantGroundClearance.setEnabled(false);
+                                                	   taxiToGate.setEnabled(false);
+                                                	   grantTaxiRunwayClearance.setEnabled(true);
+                                                   } else {
+                                                       grantGroundClearance.setEnabled(false);
+                                                       taxiToGate.setEnabled(false);
+                                                       grantTaxiRunwayClearance.setEnabled(false);
+                                                   }
                                                 }
                                             }
                                         }
