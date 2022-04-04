@@ -152,6 +152,7 @@ public class MaintenanceInspector extends JFrame
         panel2.setPreferredSize(new Dimension(200,400));
         comment = new JLabel("Comment");
         commentsArea = new JTextArea(8,15);
+        commentsArea.setEditable(false);
         reportFaults = new JButton("Report Faults");
         reportFaults.addActionListener(this);
         reportFaults.setEnabled(false);
@@ -248,6 +249,7 @@ public class MaintenanceInspector extends JFrame
         reportFaults.setEnabled(false);
         ready.setEnabled(false);
         complete.setEnabled(false);
+        commentsArea.setText("");
         refreshList(maintenanceModel, maintenanceVector);
     }
 
