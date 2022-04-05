@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="CSCU9P6-Group-Project-main copy.zip_expanded">
+    <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="14"/>
+    <property name="source" value="14"/>
+    <path id="JUnit 5.libraryclasspath">
+        <pathelement location="../../.p2/pool/plugins/org.junit.jupiter.api_5.7.1.v20210222-1948.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.junit.jupiter.engine_5.7.1.v20210222-1948.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.junit.jupiter.migrationsupport_5.7.1.v20210222-1948.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.junit.jupiter.params_5.7.1.v20210222-1948.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.junit.platform.commons_1.7.1.v20210222-1948.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.junit.platform.engine_1.7.1.v20210222-1948.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.junit.platform.launcher_1.7.1.v20210222-1948.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.junit.platform.runner_1.7.1.v20210222-1948.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.junit.platform.suite.api_1.7.1.v20210222-1948.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.junit.vintage.engine_5.7.1.v20210222-1948.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.opentest4j_1.2.0.v20190826-0900.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.apiguardian_1.1.0.v20190826-0900.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.junit_4.13.0.v20200204-1500.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.hamcrest.core_1.3.0.v20180420-1519.jar"/>
+    </path>
+    <path id="CSCU9P6-Group-Project-main copy.zip_expanded.classpath">
+        <pathelement location="bin"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
+    <path id="run.Main (3).classpath">
+        <path refid="CSCU9P6-Group-Project-main copy.zip_expanded.classpath"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
+    <path id="run.SampleTest.classpath">
+        <path refid="CSCU9P6-Group-Project-main copy.zip_expanded.classpath"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
+    <path id="run.testMethodOne.classpath">
+        <path refid="CSCU9P6-Group-Project-main copy.zip_expanded.classpath"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
+    <path id="run.GateInfoDatabaseTest.classpath">
+        <path refid="CSCU9P6-Group-Project-main copy.zip_expanded.classpath"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="CSCU9P6-Group-Project-main/src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="CSCU9P6-Group-Project-main/src"/>
+            <classpath refid="CSCU9P6-Group-Project-main copy.zip_expanded.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="Main (3)">
+        <java classname="Driver.Main" failonerror="true" fork="yes">
+            <classpath refid="run.Main (3).classpath"/>
+        </java>
+    </target>
+    <target name="SampleTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="test.src.test.SampleTest" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="run.SampleTest.classpath"/>
+        </junit>
+    </target>
+    <target name="testMethodOne">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="test.src.test.testMethodOne" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="run.testMethodOne.classpath"/>
+        </junit>
+    </target>
+    <target name="GateInfoDatabaseTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="Test.GateInfoDatabaseTest" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="run.GateInfoDatabaseTest.classpath"/>
+        </junit>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+</project>
